@@ -45,6 +45,12 @@ class DetailTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let tmpName:String = name.encodeURIComponent()!
+        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: Selector(("addTapped")))
+        let play = UIBarButtonItem(title: "Play", style: .plain, target: self, action: Selector(("buttonMethod")))
+        let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.refresh, target: self, action: Selector(("buttonMethod")))
+        //navigationItem.rightBarButtonItem = addButton
+        navigationController?.navigationItem.rightBarButtonItems = [add, play]
+        self.navigationController?.navigationBar.topItem!.title = ""
         //print("encode name: ")
         //print(tmpName as Any)
         infoOldUrl = "https://product-search-advance.appspot.com/getSingle?itemId=" + id + "&title=" + tmpName
@@ -85,7 +91,12 @@ class DetailTabController: UITabBarController {
                 }
             }
         })
-        
+        func addTapped(){
+            print("get button!!!")
+        }
+        func buttonMethod(){
+            print("get button!!!")
+        }
         guard let viewControllers = self.viewControllers else{
             return
         }

@@ -18,6 +18,7 @@
 		3E5F9299225D3E2A009EDB49 /* SimilarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F9298225D3E2A009EDB49 /* SimilarViewController.swift */; };
 		3E5F929D226076CC009EDB49 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F929C226076CC009EDB49 /* TableViewController.swift */; };
 		3E5F929F22607DF3009EDB49 /* TableViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F929E22607DF3009EDB49 /* TableViewController1.swift */; };
+		3E5F92A22261A472009EDB49 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F92A12261A472009EDB49 /* MainNavigationController.swift */; };
 		3EEE5A5C2259CB860052AF71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEE5A5B2259CB860052AF71 /* AppDelegate.swift */; };
 		3EEE5A5E2259CB860052AF71 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEE5A5D2259CB860052AF71 /* ViewController.swift */; };
 		3EEE5A612259CB860052AF71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EEE5A5F2259CB860052AF71 /* Main.storyboard */; };
@@ -61,6 +62,8 @@
 		3E5F9298225D3E2A009EDB49 /* SimilarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarViewController.swift; sourceTree = "<group>"; };
 		3E5F929C226076CC009EDB49 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		3E5F929E22607DF3009EDB49 /* TableViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController1.swift; sourceTree = "<group>"; };
+		3E5F92A022618F9D009EDB49 /* product-search-mobile1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "product-search-mobile1.entitlements"; sourceTree = "<group>"; };
+		3E5F92A12261A472009EDB49 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		3EEE5A582259CB860052AF71 /* product-search-mobile1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "product-search-mobile1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EEE5A5B2259CB860052AF71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EEE5A5D2259CB860052AF71 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 		3EEE5A5A2259CB860052AF71 /* product-search-mobile1 */ = {
 			isa = PBXGroup;
 			children = (
+				3E5F92A022618F9D009EDB49 /* product-search-mobile1.entitlements */,
 				3EEE5A5B2259CB860052AF71 /* AppDelegate.swift */,
 				3EEE5A5D2259CB860052AF71 /* ViewController.swift */,
 				3E5F9288225D211B009EDB49 /* DetailTabController.swift */,
@@ -153,6 +157,7 @@
 				3E5F9298225D3E2A009EDB49 /* SimilarViewController.swift */,
 				3E5F929C226076CC009EDB49 /* TableViewController.swift */,
 				3E5F929E22607DF3009EDB49 /* TableViewController1.swift */,
+				3E5F92A12261A472009EDB49 /* MainNavigationController.swift */,
 			);
 			path = "product-search-mobile1";
 			sourceTree = "<group>";
@@ -270,6 +275,11 @@
 				TargetAttributes = {
 					3EEE5A572259CB860052AF71 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					3EEE5A6B2259CB880052AF71 = {
 						CreatedOnToolsVersion = 10.1;
@@ -339,7 +349,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-product-search-mobile1/Pods-product-search-mobile1-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FLKAutoLayout/FLKAutoLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/ORStackView/ORStackView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
 			);
@@ -348,7 +365,14 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLKAutoLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ORStackView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
 			);
@@ -434,6 +458,7 @@
 				3EEE5A5E2259CB860052AF71 /* ViewController.swift in Sources */,
 				3E5F929F22607DF3009EDB49 /* TableViewController1.swift in Sources */,
 				3E5F9289225D211B009EDB49 /* DetailTabController.swift in Sources */,
+				3E5F92A22261A472009EDB49 /* MainNavigationController.swift in Sources */,
 				3E5F928D225D3BA6009EDB49 /* InfoNavigationController.swift in Sources */,
 				3E5F928B225D34A2009EDB49 /* InfoViewController.swift in Sources */,
 				3E5F9293225D3DE8009EDB49 /* SimilarNavigationController.swift in Sources */,
@@ -618,6 +643,7 @@
 			baseConfigurationReference = A529EDDFF472EDAE0CE973FD /* Pods-product-search-mobile1.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "product-search-mobile1/product-search-mobile1.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L64KBPL469;
 				INFOPLIST_FILE = "product-search-mobile1/Info.plist";
@@ -637,6 +663,7 @@
 			baseConfigurationReference = D3AC73B809E8C7B2B9F04A6B /* Pods-product-search-mobile1.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "product-search-mobile1/product-search-mobile1.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L64KBPL469;
 				INFOPLIST_FILE = "product-search-mobile1/Info.plist";

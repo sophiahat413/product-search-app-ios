@@ -14,13 +14,11 @@ extension String {
     }
 }
 class ViewTableCell: UITableViewCell{
-    
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var price: UILabel!
     @IBOutlet weak var ship: UILabel!
     @IBOutlet weak var zipcode: UILabel!
     @IBOutlet weak var status: UILabel!
-    @IBOutlet weak var editWish: UIButton!
     @IBOutlet weak var img: UIImageView!
 }
 
@@ -31,10 +29,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var New = false, Used = false, Unspecified = false, Pickup = false, FreeShip = false
     var zipcodes:[String] = Array()
     let url = URL(string: "https://ipapi.co/json/")
-    var testText = "hi"
     var results:[String] = Array()
     var wishList:[[String:Any]] = []
-
+    var cnt = 0, totalPrice = 0.0
+    
+    @IBOutlet weak var totalItemPrice: UILabel!
+    @IBOutlet weak var totalItems: UILabel!
+    
     @IBOutlet weak var WishList: UITableView!
     @IBOutlet weak var form: UIScrollView!
     @IBOutlet weak var keyword: UITextField!
@@ -50,16 +51,18 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var clearTop: NSLayoutConstraint!
     @IBOutlet weak var zipSwitch: UISwitch!
     @IBOutlet weak var keywordError: UILabel!
-    @IBOutlet weak var zipcode_error1: UILabel!
     @IBOutlet weak var autoComplete: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationItem.title = "Product Search"
         let thePicker = UIPickerView()
+        thePicker.backgroundColor = UIColor.white
         category.inputView = thePicker
         thePicker.delegate = self
         keywordError.isHidden = true
-        zipcode_error1.isHidden = true
+        totalItemPrice.isHidden = true
+        totalItems.isHidden = true
         keyword.delegate = self
         category.delegate = self
         distance.delegate = self
@@ -68,13 +71,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         autoComplete.delegate = self
         autoComplete.dataSource = self
         autoComplete.isHidden = true
+        autoComplete.layer.borderColor = UIColor.darkGray.cgColor
+        autoComplete.layer.borderWidth = 2.0
+        autoComplete.layer.cornerRadius = 8.0
         autoComplete.register(UITableViewCell.self, forCellReuseIdentifier: "zips")
         //autoComplete.register(UITableViewCell.self, f: "zips")
         let Tap:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DismissKeyboard))
         view.addGestureRecognizer(Tap)
         Tap.cancelsTouchesInView = false
         WishList.isHidden = true
+        WishList.tableFooterView = UIView(frame: .zero)
         getWishList()
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = UIColor(red: 92/255, green: 216/255, blue: 255/255, alpha: 1)
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(ViewController.doneClick))
+        doneButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor :UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)] ,for: UIControl.State.normal)
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(ViewController.cancelClick))
+        cancelButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor :UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)] ,for: UIControl.State.normal)
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        category.inputAccessoryView = toolBar
+        
         let session = URLSession.shared.dataTask(with: url!){
             (data, response, error) in
             if let data = data {
@@ -102,26 +123,40 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     func getWishList(){
         print("wish list")
         wishList = []
-        //print(UserDefaults.standard.dictionaryRepresentation())
+        cnt = 0
+        totalPrice = 0.0
         let regex = try! NSRegularExpression(pattern: ".*[A-Za-z].*")
         for key in UserDefaults.standard.dictionaryRepresentation().keys{
             let range = NSRange(location: 0, length: key.count)
             if regex.firstMatch(in: key, options: [], range: range) == nil {
                 let dictionary = UserDefaults.standard.object(forKey: key) as? [String: Any]
                 //print(dictionary!)
+                cnt += 1
+                totalPrice += dictionary?["priceN"] as! Double
                 wishList.append(dictionary!)
             }
         }
         WishList.reloadData()
+        if(cnt > 1){
+           totalItems.text = "WishList Total(" + String(cnt) + " items):"
+        }
+        else{
+           totalItems.text = "WishList Total(" + String(cnt) + " item):"
+        }
+        totalItemPrice.text = "$" + String(totalPrice)
     }
     @IBAction func showControl(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
             case 0:
                  form.isHidden = false
                  WishList.isHidden = true
+                 totalItemPrice.isHidden = true
+                 totalItems.isHidden = true
             case 1:
                  form.isHidden = true
                  WishList.isHidden = false
+                 totalItemPrice.isHidden = false
+                 totalItems.isHidden = false
                  getWishList()
             default:
                 break
@@ -142,6 +177,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         category.text = myPickerData[row]
+    }
+    @objc func doneClick() {
+        category.resignFirstResponder()
+    }
+    @objc func cancelClick() {
+        category.resignFirstResponder()
     }
     
     @objc func searchRecords(_ textField: UITextField){
@@ -214,34 +255,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             return cell!
         }
         else{
-            print("wish list table")
-            print(wishList)
             let cell = tableView.dequeueReusableCell(withIdentifier: "wishCell", for: indexPath) as! ViewTableCell
             cell.name.text = wishList[indexPath.row]["title"] as? String
             cell.price.text = wishList[indexPath.row]["price"] as? String
             cell.ship.text = wishList[indexPath.row]["shipping"] as? String
             cell.status.text = wishList[indexPath.row]["condition"] as? String
-            cell.editWish.setImage(UIImage(named:"wishListFilled"), for: .normal)
             cell.zipcode.text = wishList[indexPath.row]["zip"] as? String
             let imgF = wishList[indexPath.row]["image"] as? String
             let tmpImg = "https" + imgF!.dropFirst(4)
             let imgUrl = URL(string: tmpImg)
             let session = URLSession(configuration: .default)
             let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
-                // The download has finished.
+                    // The download has finished.
                 if let e = error {
-                    print("Error downloading cat picture: \(e)")
+                        print("Error downloading cat picture: \(e)")
                 } else {
-                    // No errors found.
-                    // It would be weird if we didn't have a response, so check for that too.
+                        // No errors found.
+                        // It would be weird if we didn't have a response, so check for that too.
                     if let res = response as? HTTPURLResponse {
-                        //print("Downloaded cat picture with response code \(res.statusCode)")
+                            //print("Downloaded cat picture with response code \(res.statusCode)")
                         if let imageData = data {
-                            // Finally convert that Data into an image and do what you wish with it.
+                                // Finally convert that Data into an image and do what you wish with it.
                             DispatchQueue.main.async {
                                 cell.img.image = UIImage(data: imageData)
                             }
-                            // Do something with your image.
+                                // Do something with your image.
                         } else {
                             print("Couldn't get image: Image is nil")
                         }
@@ -267,6 +305,26 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             
         }
     }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if(tableView == WishList){
+            if editingStyle == UITableViewCell.EditingStyle.delete{
+                let id = wishList[indexPath.row]["id"] as? String
+                UserDefaults.standard.removeObject(forKey: id!)
+                cnt -= 1
+                totalPrice -= (wishList[indexPath.row]["priceN"] as? Double)!
+                if(cnt > 1){
+                    totalItems.text = "WishList Total(" + String(cnt) + " items):"
+                }
+                else{
+                    totalItems.text = "WishList Total(" + String(cnt) + " item):"
+                }
+                totalItemPrice.text = "$" + String(totalPrice)
+                wishList.remove(at: indexPath.row)
+                WishList.reloadData()
+            }
+        }
+    }
+    
     @objc func DismissKeyboard(){
         view.endEditing(true)
     }
@@ -290,6 +348,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
         else{
             zipcode.isHidden = true
+            zipcode.text = ""
             clearTop.constant = -10
             searchTop.constant = -10
         }
@@ -338,21 +397,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBAction func submit(_ sender: UIButton) {
         if(keyword.text?.isEmpty ?? true){
             print("keyword is empty!")
+            keywordError.text = "Keyword Is Mandatory"
             keywordError.isHidden = false
             Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideKeywordError), userInfo: nil, repeats: false)
             return
         }
         if(zipSwitch.isOn == true){
             if(zipcode.text?.isEmpty ?? true){
-                zipcode_error1.isHidden = false
-                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideZipcodeError1), userInfo: nil, repeats: false)
+                keywordError.isHidden = false
+                keywordError.text = "Zipcode Is Mandatory"
+                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideKeywordError), userInfo: nil, repeats: false)
                 return
             }
             if(zipcode.text?.count != 5){
                 print("zipcode length is wrong")
-                zipcode_error1.text = "Invalid Zipcode"
-                zipcode_error1.isHidden = false
-                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideZipcodeError1), userInfo: nil, repeats: false)
+                keywordError.text = "Zipcode Is Invalid"
+                keywordError.isHidden = false
+                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideKeywordError), userInfo: nil, repeats: false)
                 return
             }
             let userzip = zipcode.text!
@@ -360,9 +421,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             let regex = try! NSRegularExpression(pattern: "[^0-9]")
             if regex.firstMatch(in: userzip, options: [], range: range) != nil {
                 print("zipcode is invalid")
-                zipcode_error1.text = "Invalid Zipcode"
-                zipcode_error1.isHidden = false
-                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideZipcodeError1), userInfo: nil, repeats: false)
+                keywordError.text = "Zipcode Is Invalid"
+                keywordError.isHidden = false
+                Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideKeywordError), userInfo: nil, repeats: false)
                 return
             }
         }
@@ -477,12 +538,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         //print("hide keyword error")
         keywordError.isHidden = true
     }
-    
-    @objc func hideZipcodeError1() {
-        //print("hide zipcode error")
-        zipcode_error1.isHidden = true
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

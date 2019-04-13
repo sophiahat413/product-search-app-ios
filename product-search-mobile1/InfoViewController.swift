@@ -18,6 +18,7 @@ class InfoTableViewCell : UITableViewCell {
 
 class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDataSource, UITableViewDelegate {
    
+    
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var scrollView: UIScrollView!
     //@IBOutlet weak var infoScrollView: UIScrollView!
@@ -26,6 +27,9 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     @IBOutlet weak var infoIcon: UIImageView!
     @IBOutlet weak var infoTitle: UILabel!
     
+    @IBOutlet weak var facebook: UIBarButtonItem!
+    
+    @IBOutlet weak var editList: UIBarButtonItem!
     @IBOutlet weak var InfoTable: UITableView!
     //@IBOutlet weak var InfoTable: UITableView!
     
@@ -44,6 +48,8 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
         //print("get title from tab info!")
         //print(name)
         //print(imgs)
+    //navigationController?.isNavigationBarHidden = true
+        tabBarController?.navigationItem.rightBarButtonItems = [share] as? [UIBarButtonItem]
         keys = Array(info.keys)
         itemName.text = name
         itemPrice.text = price
@@ -107,6 +113,12 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     }
     //ScrollView Method
     //----------------------------------
+    
+    @IBAction func share(_ sender: UIButton) {
+        let testUrl = URL(string: "https://www.facebook.com/sharer/sharer.php?u=www.ebay.com&quote=%22hi%22")
+        UIApplication.shared.open(testUrl!, options: [:])
+    }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
             let pageNumber = scrollView.contentOffset.x / scrollView.frame.size.width

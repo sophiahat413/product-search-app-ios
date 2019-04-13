@@ -1,0 +1,6 @@
+framework module Pods_product_search_mobile1Tests {
+  umbrella header "Pods-product-search-mobile1Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
