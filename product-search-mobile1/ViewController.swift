@@ -143,7 +143,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 let dictionary = UserDefaults.standard.object(forKey: key) as? [String: Any]
                 //print(dictionary!)
                 cnt += 1
-                totalPrice += dictionary?["priceN"] as! Double
+                //totalPrice += dictionary?["priceN"] as! Double
                 wishList.append(dictionary!)
             }
         }
@@ -169,7 +169,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        WishList.reloadData()
+        
     }
     @IBAction func showControl(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
@@ -286,33 +286,35 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             cell.status.text = wishList[indexPath.row]["condition"] as? String
             cell.zipcode.text = wishList[indexPath.row]["zip"] as? String
             let imgF = wishList[indexPath.row]["image"] as? String
-            let tmpImg = "https" + imgF!.dropFirst(4)
-            let imgUrl = URL(string: tmpImg)
-            let session = URLSession(configuration: .default)
-            let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
-                    // The download has finished.
-                if let e = error {
-                        print("Error downloading cat picture: \(e)")
-                } else {
-                        // No errors found.
-                        // It would be weird if we didn't have a response, so check for that too.
-                    if let res = response as? HTTPURLResponse {
-                            //print("Downloaded cat picture with response code \(res.statusCode)")
-                        if let imageData = data {
-                                // Finally convert that Data into an image and do what you wish with it.
-                            DispatchQueue.main.async {
-                                cell.img.image = UIImage(data: imageData)
-                            }
-                                // Do something with your image.
-                        } else {
-                            print("Couldn't get image: Image is nil")
-                        }
+            if imgF != nil {
+                let tmpImg = "https" + imgF!.dropFirst(4)
+                let imgUrl = URL(string: tmpImg)
+                let session = URLSession(configuration: .default)
+                let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
+                        // The download has finished.
+                    if let e = error {
+                            print("Error downloading cat picture: \(e)")
                     } else {
-                        print("Couldn't get response code for some reason")
+                            // No errors found.
+                            // It would be weird if we didn't have a response, so check for that too.
+                        if let res = response as? HTTPURLResponse {
+                                //print("Downloaded cat picture with response code \(res.statusCode)")
+                            if let imageData = data {
+                                    // Finally convert that Data into an image and do what you wish with it.
+                                DispatchQueue.main.async {
+                                    cell.img.image = UIImage(data: imageData)
+                                }
+                                    // Do something with your image.
+                            } else {
+                                print("Couldn't get image: Image is nil")
+                            }
+                        } else {
+                            print("Couldn't get response code for some reason")
+                        }
                     }
                 }
+                downloadPicTask.resume()
             }
-            downloadPicTask.resume()
             return cell
         }
     }

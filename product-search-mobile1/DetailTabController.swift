@@ -42,6 +42,7 @@ class DetailTabController: UITabBarController {
     var seller:[String:Any] = [:]
     var pictures:[[String:Any]] = []
     var getData = false
+    var storeUrl:String = ""
     override func viewDidLoad() {
         print("shipcost in ttab")
         print(shipCost)
@@ -64,6 +65,7 @@ class DetailTabController: UITabBarController {
                 self.returnPolicy = user["policy"] as! [String : Any]
                 self.pictures = user["pictures"] as! [[String : Any]]
                 self.shipInfo = user["shipping"] as! [String : Any]
+                self.storeUrl = user["link"] as! String
                 
                 DispatchQueue.main.async {
                     guard let viewControllers = self.viewControllers else{
@@ -77,6 +79,7 @@ class DetailTabController: UITabBarController {
                                 photosViewController.price = self.price
                                 photosViewController.id = self.id
                                 photosViewController.itemInfo = self.itemInfo
+                                photosViewController.storeUrl = self.storeUrl
                             }
                         }
                         if let shippingNavigationController = viewController as? ShippingNavigationController {
@@ -89,6 +92,7 @@ class DetailTabController: UITabBarController {
                                 shippingViewController.price = self.price
                                 shippingViewController.id = self.id
                                 shippingViewController.itemInfo = self.itemInfo
+                                shippingViewController.storeUrl = self.storeUrl
                             }
                         }
                         if let similarNavigationController = viewController as? SimilarNavigationController {
@@ -98,6 +102,7 @@ class DetailTabController: UITabBarController {
                                 similarViewController.name = self.name
                                 similarViewController.id = self.id
                                 similarViewController.itemInfo = self.itemInfo
+                                similarViewController.storeUrl = self.storeUrl
                             }
                         }
                     }
@@ -116,6 +121,7 @@ class DetailTabController: UITabBarController {
                     infoViewController.price = self.price
                     infoViewController.id = self.id
                     infoViewController.itemInfo = self.itemInfo
+                    infoViewController.storeUrl = self.storeUrl
                 }
             }
         }

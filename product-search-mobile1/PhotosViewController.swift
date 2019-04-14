@@ -99,9 +99,9 @@ class PhotosViewController: UIViewController {
     }
     
     @IBAction func shareToFacebook(_ sender: Any) {
-        let content = "Buy " + name + "for " + price + " from EBay!"
+        let content = "Buy " + name + " for " + price + " from EBay!"
         let newContent = content.encodeURIComponent()
-        let link = "https://www.facebook.com/sharer/sharer.php?u=www.ebay.com&quote=" + newContent!
+        let link = "https://www.facebook.com/sharer/sharer.php?u=" + storeUrl + "&quote=" + newContent!
         let url = URL(string: link)
         UIApplication.shared.open(url!, options: [:])
     }
