@@ -1,8 +1,8 @@
 //
-//  TableViewController.swift
+//  ItemViewController.swift
 //  product-search-mobile1
 //
-//  Created by 王馨嫻 on 2019/4/8.
+//  Created by 王馨嫻 on 2019/4/13.
 //  Copyright © 2019年 王馨嫻. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import UIKit
 import SwiftSpinner
 extension UILabel {
     
-    func retrieveTextHeight1 () -> CGFloat {
+    func retrieveTextHeight () -> CGFloat {
         let attributedText = NSAttributedString(string: self.text!, attributes: [NSAttributedString.Key.font:self.font])
         
         let rect = attributedText.boundingRect(with: CGSize(width: self.frame.size.width, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil)
@@ -19,7 +19,7 @@ extension UILabel {
     }
     
 }
-struct itemInfo1 {
+struct itemInfo {
     var id: String
     var title: String
     var short_title: String
@@ -31,46 +31,45 @@ struct itemInfo1 {
     var condition: String
     var shipInfo: [String:Any]
 }
-protocol SwiftyTableViewCellDelegate1: class {
-    func showEditList(_ sender: ItemTableViewCell, title: String, message: String)
+protocol SwiftyTableViewCellDelegate : class {
+    func showEditList(_ sender: ItemViewCell, title: String, message: String)
 }
 
-class ItemTableViewCell: UITableViewCell {
-    
+class ItemViewCell: UITableViewCell{
     @IBOutlet weak var itemImg: UIImageView!
     @IBOutlet weak var itemTitle: UILabel!
     @IBOutlet weak var itemPrice: UILabel!
     @IBOutlet weak var itemShipCost: UILabel!
     @IBOutlet weak var itemZip: UILabel!
-    @IBOutlet weak var itemStatus: UILabel!
+    
     @IBOutlet weak var editWish: UIButton!
     @IBOutlet weak var itemCondition: UILabel!
     var info:[String:Any] = [:]
     var id:String = "", msg = ""
-    weak var delegate: SwiftyTableViewCellDelegate1?
+    weak var delegate: SwiftyTableViewCellDelegate?
     
     @IBAction func editList(_ sender: UIButton) {
-            if(UserDefaults.standard.object(forKey: id) == nil){
-                UserDefaults.standard.set(info, forKey: id)
-                sender.setImage(UIImage(named:"wishListFilled"), for:.normal)
-                msg = itemTitle.text! + " was added to the wishList"
-            }
-            else{
-                UserDefaults.standard.removeObject(forKey: id)
-                sender.setImage(UIImage(named:"wishListEmpty"), for:.normal)
-                msg = itemTitle.text! + " was removed from the wishList"
-            }
-            delegate?.showEditList(self, title:"", message: msg)
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            UserDefaults.standard.set(info, forKey: id)
+            sender.setImage(UIImage(named:"wishListFilled"), for:.normal)
+            msg = itemTitle.text! + " was added to the wishList"
+        }
+        else{
+            UserDefaults.standard.removeObject(forKey: id)
+            sender.setImage(UIImage(named:"wishListEmpty"), for:.normal)
+            msg = itemTitle.text! + " was removed from the wishList"
+        }
+        delegate?.showEditList(self, title:"", message: msg)
     }
-    
 }
 
-class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
+class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwiftyTableViewCellDelegate {
     
-    
+    @IBOutlet weak var itemTableView: UITableView!
+    @IBOutlet weak var editMsg: UILabel!
     var results:[[String:Any]] = Array()
     var text:String = ""
-    var items:[itemInfo1] = []
+    var items:[itemInfo] = []
     var currentTitle:String = ""
     var currentId:String = ""
     var currentPrice:String = ""
@@ -83,35 +82,23 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
     var infoOldUrl = ""
     var currentSimilar:[[String:Any]] = []
     var currentPictures:[[String:Any]] = []
-    var label = UILabel(frame: CGRect(x:0, y:0, width:220, height:150))
     
     
-    @IBOutlet var itemTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        label.textAlignment = NSTextAlignment.center
-        label.text = "I'm a test label"
-        label.center = CGPoint(x:250, y:500)
-        label.layer.backgroundColor = UIColor.black.withAlphaComponent(0.5).cgColor
-        label.layer.cornerRadius = 8.0
-        label.textColor = UIColor.white
-        label.numberOfLines = 4
-        
-        label.isHidden = true
-        
         navigationItem.backBarButtonItem?.title = ""
+        editMsg.isHidden = true
+        editMsg.layer.zPosition = 1;
+        editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        editMsg.layer.cornerRadius = 8.0
         SwiftSpinner.show("Searching...")
         print("getting results")
         print(text)
-        
         self.navigationController?.navigationBar.topItem!.title = ""
         itemTableView.delegate = self
         itemTableView.dataSource = self
         let tmpUrl:String = text.replacingOccurrences(of: " ", with: "%20")
         let reqUrl = URL(string: tmpUrl)
-        
-        //print(reqUrl)
         let auto = URLSession.shared.dataTask(with: reqUrl!){
             (data, response, error) in
             if let data = data {
@@ -123,7 +110,7 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
                     self.results = json
                     //print(self.results)
                     for data in self.results {
-                        var item = itemInfo1(id:"", title:"", short_title:"", price:"", shipCost:"", zip:"", img:"", wish:false, condition:"", shipInfo:[:])
+                        var item = itemInfo(id:"", title:"", short_title:"", price:"", shipCost:"", zip:"", img:"", wish:false, condition:"", shipInfo:[:])
                         item.id = data["id"] as! String
                         item.title = data["title"] as! String
                         item.short_title = data["short_title"] as! String
@@ -153,33 +140,24 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
         }
         auto.resume()
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
-    override func viewDidAppear(_ animated: Bool) {
+        // Do any additional setup after loading the view.
     }
     @objc func hideSpinner() {
         //print("hide keyword error")
         SwiftSpinner.hide()
     }
-    // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath) as! ItemTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath) as! ItemViewCell
         //print("get into view!!")
         //print(items)
         let item = items[indexPath.row]
         let id = results[indexPath.row]["id"] as! String
         cell.delegate = self
-        cell.itemTitle?.text = item.short_title
+        cell.itemTitle?.text = item.title
         cell.itemPrice?.text = item.price
         cell.itemCondition?.text = item.condition
         if(UserDefaults.standard.object(forKey: id) == nil){
@@ -226,8 +204,7 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
         //cell.itemStatus?.text = item.wish
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("select one item!!")
         //print(items[indexPath.row])
         currentId = items[indexPath.row].id
@@ -242,7 +219,7 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
                 self.currentImg = user["image"] as! [String]
                 self.currentItemInfo = user
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "getDetails", sender: nil)
+                    self.performSegue(withIdentifier: "getItemInfo", sender: nil)
                 }
             }
         })
@@ -282,60 +259,25 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    func showEditList(_ sender: ItemTableViewCell, title: String, message: String) {
-        label.text = message
-        label.frame.size.height = label.retrieveTextHeight1()
-        label.isHidden = false
+    func showEditList(_ sender: ItemViewCell, title: String, message: String) {
+        editMsg.text = message
+        editMsg.frame.size.height = editMsg.retrieveTextHeight()
+        editMsg.isHidden = false
         let when = DispatchTime.now() + 1
         print("get item!!!")
         print(message)
         DispatchQueue.main.asyncAfter(deadline: when){
-            self.label.isHidden = true
+            self.editMsg.isHidden = true
         }
     }
     /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }

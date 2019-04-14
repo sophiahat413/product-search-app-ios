@@ -26,7 +26,7 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     @IBOutlet weak var itemPrice: UILabel!
     @IBOutlet weak var infoIcon: UIImageView!
     @IBOutlet weak var infoTitle: UILabel!
-    
+    @IBOutlet weak var noSpecific: UILabel!
     @IBOutlet weak var facebook: UIBarButtonItem!
     
     @IBOutlet weak var editList: UIBarButtonItem!
@@ -51,6 +51,15 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     //navigationController?.isNavigationBarHidden = true
         tabBarController?.navigationItem.rightBarButtonItems = [share] as? [UIBarButtonItem]
         keys = Array(info.keys)
+        InfoTable.isScrollEnabled = true
+        if(keys.count == 0){
+            noSpecific.isHidden = false
+            InfoTable.isHidden = true
+        }
+        else{
+            noSpecific.isHidden = true
+            InfoTable.isHidden = false
+        }
         itemName.text = name
         itemPrice.text = price
         infoTitle.text = "Description"

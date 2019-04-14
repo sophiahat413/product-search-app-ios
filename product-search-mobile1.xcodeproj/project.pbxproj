@@ -19,6 +19,7 @@
 		3E5F929D226076CC009EDB49 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F929C226076CC009EDB49 /* TableViewController.swift */; };
 		3E5F929F22607DF3009EDB49 /* TableViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F929E22607DF3009EDB49 /* TableViewController1.swift */; };
 		3E5F92A22261A472009EDB49 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F92A12261A472009EDB49 /* MainNavigationController.swift */; };
+		3E5F92A42262762C009EDB49 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5F92A32262762C009EDB49 /* ItemViewController.swift */; };
 		3EEE5A5C2259CB860052AF71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEE5A5B2259CB860052AF71 /* AppDelegate.swift */; };
 		3EEE5A5E2259CB860052AF71 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEE5A5D2259CB860052AF71 /* ViewController.swift */; };
 		3EEE5A612259CB860052AF71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EEE5A5F2259CB860052AF71 /* Main.storyboard */; };
@@ -64,6 +65,7 @@
 		3E5F929E22607DF3009EDB49 /* TableViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController1.swift; sourceTree = "<group>"; };
 		3E5F92A022618F9D009EDB49 /* product-search-mobile1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "product-search-mobile1.entitlements"; sourceTree = "<group>"; };
 		3E5F92A12261A472009EDB49 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
+		3E5F92A32262762C009EDB49 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		3EEE5A582259CB860052AF71 /* product-search-mobile1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "product-search-mobile1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EEE5A5B2259CB860052AF71 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EEE5A5D2259CB860052AF71 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				3E5F929C226076CC009EDB49 /* TableViewController.swift */,
 				3E5F929E22607DF3009EDB49 /* TableViewController1.swift */,
 				3E5F92A12261A472009EDB49 /* MainNavigationController.swift */,
+				3E5F92A32262762C009EDB49 /* ItemViewController.swift */,
 			);
 			path = "product-search-mobile1";
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 			files = (
 				3E5F9291225D3DCD009EDB49 /* PhotosNavigationController.swift in Sources */,
 				3EEE5A5E2259CB860052AF71 /* ViewController.swift in Sources */,
+				3E5F92A42262762C009EDB49 /* ItemViewController.swift in Sources */,
 				3E5F929F22607DF3009EDB49 /* TableViewController1.swift in Sources */,
 				3E5F9289225D211B009EDB49 /* DetailTabController.swift in Sources */,
 				3E5F92A22261A472009EDB49 /* MainNavigationController.swift in Sources */,
