@@ -144,8 +144,8 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SimilarViewCell
         cell.layer.borderWidth = 2.0
-        cell.layer.cornerRadius = 8.0
-        cell.layer.borderColor = UIColor(red:0.88, green:0.88, blue:0.88, alpha:1.0).cgColor
+        cell.layer.cornerRadius = 10.0
+        cell.layer.borderColor = UIColor(red:0.69, green:0.69, blue:0.69, alpha:1.0).cgColor
         cell.backgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
         cell.itemTitle.text = items[indexPath.row].title
         cell.itemCost.text = items[indexPath.row].shippingS
@@ -178,8 +178,10 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         downloadPicTask.resume()
         return cell
     }
-    
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let url = URL(string: items[indexPath.row].url)
+        UIApplication.shared.open(url!, options: [:])
+    }
     /*
     // MARK: - Navigation
 

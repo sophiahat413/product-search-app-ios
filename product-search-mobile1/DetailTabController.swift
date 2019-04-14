@@ -43,6 +43,8 @@ class DetailTabController: UITabBarController {
     var pictures:[[String:Any]] = []
     var getData = false
     override func viewDidLoad() {
+        print("shipcost in ttab")
+        print(shipCost)
         super.viewDidLoad()
         let tmpName:String = name.encodeURIComponent()!
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: Selector(("addTapped")))

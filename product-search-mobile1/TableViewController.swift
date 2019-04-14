@@ -75,6 +75,7 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
     var currentId:String = ""
     var currentPrice:String = ""
     var currentShip:[String:Any] = [:]
+    var currentShipCost:String = ""
     var currentSpecifics:[String:Any] = [:]
     var currentImg:[String] = []
     var currentSeller:[String:Any] = [:]
@@ -234,6 +235,7 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
         currentShip = items[indexPath.row].shipInfo
         currentTitle = items[indexPath.row].title
         currentPrice = items[indexPath.row].price
+        currentShipCost = items[indexPath.row].shipCost
         //performSegue(withIdentifier: "getDetails", sender: nil)
         infoOldUrl = "https://product-search-backend.appspot.com/getSingle?itemId=" + currentId
         getInfo(id: currentId, userCompletionHandler: { user, error in
@@ -251,6 +253,9 @@ class TableViewController: UITableViewController, SwiftyTableViewCellDelegate1 {
         let vc = segue.destination as! DetailTabController
         vc.id = currentId
         vc.shipInfo = currentShip
+        vc.shipCost = currentShipCost
+        print("shipcost in table view")
+        print(currentShipCost)
         vc.specifics = currentSpecifics
         vc.imgs = currentImg
         vc.name = currentTitle

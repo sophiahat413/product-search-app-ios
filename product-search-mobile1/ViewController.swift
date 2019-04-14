@@ -32,6 +32,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var results:[String] = Array()
     var wishList:[[String:Any]] = []
     var cnt = 0, totalPrice = 0.0
+    var currentId:String = ""
+    var currentTitle:String = ""
+    var currentPrice:String = ""
+    var currentShipCost:String = ""
+    var infoOldUrl:String = ""
+    var currentSpecifics:[String:Any] = [:]
+    var currentImg:[String] = []
+    var currentItemInfo:[String:Any] = [:]
     
     @IBOutlet weak var totalItemPrice: UILabel!
     @IBOutlet weak var totalItems: UILabel!
@@ -315,7 +323,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             tableView.isHidden = true
         }
         else{
-            
+            currentId = (wishList[indexPath.row]["id"] as? String)!
+            currentTitle = (wishList[indexPath.row]["title"] as? String)!
+            currentPrice = (wishList[indexPath.row]["price"] as? String)!
+            currentShipCost = (wishList[indexPath.row]["shipping"] as? String)!
+            //performSegue(withIdentifier: "getDetails", sender: nil)
+            infoOldUrl = "https://product-search-backend.appspot.com/getSingle?itemId=" + currentId
+            getInfo(id: currentId, userCompletionHandler: { user, error in
+                if let user = user{
+                    self.currentSpecifics
+                        = user["specifics"] as! [String : Any]
+                    self.currentImg = user["image"] as! [String]
+                    self.currentItemInfo = user
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "getDetailFromMain", sender: nil)
+                    }
+                }
+            })
         }
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -349,7 +373,39 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             }
         }
     }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "getItemList"){
+            let vc = segue.destination as! ItemViewController
+            vc.text = requestURL
+        }
+        else{
+            let vc = segue.destination as! DetailTabController
+            vc.id = currentId
+            vc.specifics = currentSpecifics
+            vc.shipCost = currentShipCost
+            vc.imgs = currentImg
+            vc.name = currentTitle
+            vc.price = currentPrice
+        }
+    }
+    func getInfo(id: String, userCompletionHandler: @escaping([String:Any]?, Error?) -> Void){
+        let infoUrl = URL(string: infoOldUrl)
+        let task = URLSession.shared.dataTask(with: infoUrl!, completionHandler: {
+            (data: Data?, response: URLResponse?, error: Error?) in
+            guard let data = data else { return }
+            do{
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let json = jsonObject as? [String:Any] else {
+                    return
+                }
+                userCompletionHandler(json, nil)
+            } catch let error  {
+                print("Json parsing error", error )
+                userCompletionHandler(nil, error)
+            }
+        })
+        task.resume()
+    }
     @objc func DismissKeyboard(){
         view.endEditing(true)
     }
@@ -539,11 +595,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             return false
         }
         return true
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! ItemViewController
-        vc.text = requestURL
     }
     
     @IBAction func reset(_ sender: UIButton) {

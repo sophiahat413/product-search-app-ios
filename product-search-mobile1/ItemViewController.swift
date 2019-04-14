@@ -73,6 +73,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var currentTitle:String = ""
     var currentId:String = ""
     var currentPrice:String = ""
+    var currentShipCost:String = ""
     var currentShip:[String:Any] = [:]
     var currentSpecifics:[String:Any] = [:]
     var currentImg:[String] = []
@@ -211,6 +212,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         currentShip = items[indexPath.row].shipInfo
         currentTitle = items[indexPath.row].title
         currentPrice = items[indexPath.row].price
+        currentShipCost = items[indexPath.row].shipCost
         //performSegue(withIdentifier: "getDetails", sender: nil)
         infoOldUrl = "https://product-search-backend.appspot.com/getSingle?itemId=" + currentId
         getInfo(id: currentId, userCompletionHandler: { user, error in
@@ -229,6 +231,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         vc.id = currentId
         vc.shipInfo = currentShip
         vc.specifics = currentSpecifics
+        vc.shipCost = currentShipCost
         vc.imgs = currentImg
         vc.name = currentTitle
         vc.price = currentPrice
