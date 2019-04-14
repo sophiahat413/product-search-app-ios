@@ -83,6 +83,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var infoOldUrl = ""
     var currentSimilar:[[String:Any]] = []
     var currentPictures:[[String:Any]] = []
+    var currentInfo:[String:Any] = [:]
     
     
     override func viewDidLoad() {
@@ -142,6 +143,9 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         auto.resume()
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        itemTableView.reloadData()
     }
     @objc func hideSpinner() {
         //print("hide keyword error")
@@ -213,6 +217,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         currentTitle = items[indexPath.row].title
         currentPrice = items[indexPath.row].price
         currentShipCost = items[indexPath.row].shipCost
+        currentInfo = results[indexPath.row]
         //performSegue(withIdentifier: "getDetails", sender: nil)
         infoOldUrl = "https://product-search-backend.appspot.com/getSingle?itemId=" + currentId
         getInfo(id: currentId, userCompletionHandler: { user, error in
@@ -235,6 +240,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         vc.imgs = currentImg
         vc.name = currentTitle
         vc.price = currentPrice
+        vc.itemInfo = currentInfo
     }
     func getInfo(id: String, userCompletionHandler: @escaping([String:Any]?, Error?) -> Void){
         let infoUrl = URL(string: infoOldUrl)

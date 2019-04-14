@@ -7,16 +7,30 @@
 //
 
 import UIKit
+import SwiftSpinner
 
 class PhotosViewController: UIViewController {
 
     @IBOutlet weak var photos: UIScrollView!
+    @IBOutlet weak var editList: UIBarButtonItem!
     var info:[[String:Any]] = []
+    var itemInfo:[String:Any] = [:]
     var display:[Data] = []
     var frame = CGRect(x:0, y:0, width:0, height:0)
+    var price:String = ""
+    var name:String = ""
+    var storeUrl:String = ""
+    var id:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        SwiftSpinner.show("Fetching Google Images...")
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            editList.image = UIImage(named:"wishListEmpty")
+        }
+        else{
+            editList.image = UIImage(named:"wishListFilled")
+        }
         //print("get imahes: ")
         //print(info)
         for i in 0..<info.count {
@@ -51,10 +65,45 @@ class PhotosViewController: UIViewController {
         }
         photos.contentSize = CGSize(width: photos.frame.size.width, height: (photos.frame.size.height * CGFloat(info.count)))
         photos.delegate = self as? UIScrollViewDelegate
+         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            editList.image = UIImage(named:"wishListEmpty")
+        }
+        else{
+            editList.image = UIImage(named:"wishListFilled")
+        }
+    }
+    @objc func hideSpinner(){
+        
+        SwiftSpinner.hide()
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
             scrollView.contentOffset.x = 0.0
+    }
+    @IBAction func editWish(_ sender: UIBarButtonItem) {
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            UserDefaults.standard.set(itemInfo, forKey: id)
+            editList.image = UIImage(named:"wishListFilled")
+        }
+        else{
+            UserDefaults.standard.removeObject(forKey: id)
+            editList.image = UIImage(named:"wishListEmpty")
+            
+        }
+    }
+    @IBAction func goBack(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func shareToFacebook(_ sender: Any) {
+        let content = "Buy " + name + "for " + price + " from EBay!"
+        let newContent = content.encodeURIComponent()
+        let link = "https://www.facebook.com/sharer/sharer.php?u=www.ebay.com&quote=" + newContent!
+        let url = URL(string: link)
+        UIApplication.shared.open(url!, options: [:])
     }
     /*
     // MARK: - Navigation

@@ -47,11 +47,10 @@ class DetailTabController: UITabBarController {
         print(shipCost)
         super.viewDidLoad()
         let tmpName:String = name.encodeURIComponent()!
-        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: Selector(("addTapped")))
-        let play = UIBarButtonItem(title: "Play", style: .plain, target: self, action: Selector(("buttonMethod")))
-        let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.refresh, target: self, action: Selector(("buttonMethod")))
-        //navigationItem.rightBarButtonItem = addButton
-        navigationController?.navigationItem.rightBarButtonItems = [add, play]
+        //let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: Selector(("addTapped")))
+        //let play = UIBarButtonItem(title: "Play", style: .plain, target: self, action: Selector(("buttonMethod")))
+        //let addButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.refresh, target: self, action: Selector(("buttonMethod")))
+       // addButton.setImage(UIImage(named: "facebook"))
         self.navigationController?.navigationBar.topItem!.title = ""
         //print("encode name: ")
         //print(tmpName as Any)
@@ -74,6 +73,10 @@ class DetailTabController: UITabBarController {
                         if let photosNavigationController = viewController as? PhotosNavigationController {
                             if let photosViewController = photosNavigationController.viewControllers.first as? PhotosViewController {
                                 photosViewController.info = self.pictures
+                                photosViewController.name = self.name
+                                photosViewController.price = self.price
+                                photosViewController.id = self.id
+                                photosViewController.itemInfo = self.itemInfo
                             }
                         }
                         if let shippingNavigationController = viewController as? ShippingNavigationController {
@@ -82,23 +85,25 @@ class DetailTabController: UITabBarController {
                                 shippingViewController.shipping = self.shipInfo
                                 shippingViewController.shipCost = self.shipCost
                                 shippingViewController.policy = self.returnPolicy
+                                shippingViewController.name = self.name
+                                shippingViewController.price = self.price
+                                shippingViewController.id = self.id
+                                shippingViewController.itemInfo = self.itemInfo
                             }
                         }
                         if let similarNavigationController = viewController as? SimilarNavigationController {
                             if let similarViewController = similarNavigationController.viewControllers.first as? SimilarViewController {
                                 similarViewController.info = self.similarItems
+                                similarViewController.price = self.price
+                                similarViewController.name = self.name
+                                similarViewController.id = self.id
+                                similarViewController.itemInfo = self.itemInfo
                             }
                         }
                     }
                 }
             }
         })
-        func addTapped(){
-            print("get button!!!")
-        }
-        func buttonMethod(){
-            print("get button!!!")
-        }
         guard let viewControllers = self.viewControllers else{
             return
         }
@@ -109,6 +114,8 @@ class DetailTabController: UITabBarController {
                     infoViewController.imgs = self.imgs
                     infoViewController.name = self.name
                     infoViewController.price = self.price
+                    infoViewController.id = self.id
+                    infoViewController.itemInfo = self.itemInfo
                 }
             }
         }
@@ -148,7 +155,9 @@ class DetailTabController: UITabBarController {
         tabBarItem.selectedImage = selectedImg4
         
     }
-    
+    @objc func testing(){
+        print("testing!!")
+    }
     func getInfo(id: String, userCompletionHandler: @escaping([String:Any]?, Error?) -> Void){
        let infoUrl = URL(string: infoOldUrl)
         let task = URLSession.shared.dataTask(with: infoUrl!, completionHandler: {

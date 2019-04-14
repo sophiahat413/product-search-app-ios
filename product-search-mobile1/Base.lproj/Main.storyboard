@@ -144,7 +144,7 @@
                     <connections>
                         <outlet property="editMsg" destination="IFz-MX-6RO" id="nCJ-mC-Ubb"/>
                         <outlet property="itemTableView" destination="eIU-oa-YFO" id="6no-ZE-lVx"/>
-                        <segue destination="Oo9-rX-QJc" kind="show" identifier="getItemInfo" id="4fo-Hy-LjP"/>
+                        <segue destination="Oo9-rX-QJc" kind="presentation" identifier="getItemInfo" id="4fo-Hy-LjP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MvM-AE-dti" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -170,13 +170,29 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="acc-u2-cmm"/>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="RDq-dW-yhl">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="backBtn" id="GL3-On-nGM">
+                            <connections>
+                                <action selector="goBack:" destination="OsD-AY-cei" id="wI2-OY-3J6"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="wishListEmpty" id="dHl-vH-Uzx"/>
-                            <barButtonItem title="Item" image="facebook" id="hgj-Bk-3Nq"/>
+                            <barButtonItem title="Item" image="wishListEmpty" id="dHl-vH-Uzx">
+                                <connections>
+                                    <action selector="editWish:" destination="OsD-AY-cei" id="y7i-Ju-iME"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="facebook" id="hgj-Bk-3Nq">
+                                <connections>
+                                    <action selector="shareToFacebook:" destination="OsD-AY-cei" id="4pi-s9-lar"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="editList" destination="dHl-vH-Uzx" id="e7f-hw-Uwh"/>
                         <outlet property="photos" destination="I2b-7M-ODv" id="2Vo-GN-GQf"/>
                     </connections>
                 </viewController>
@@ -337,12 +353,26 @@
                         <viewLayoutGuide key="safeArea" id="9Ge-di-OlX"/>
                     </view>
                     <navigationItem key="navigationItem" id="pJB-IW-QwS">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="backBtn" id="qZj-QC-dL1">
+                            <connections>
+                                <action selector="goBack:" destination="USs-bD-93n" id="rfA-35-l4s"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="wishListEmpty" id="pej-7J-LYS"/>
-                            <barButtonItem title="Item" image="facebook" id="1eW-45-tNN"/>
+                            <barButtonItem title="Item" image="wishListEmpty" id="pej-7J-LYS">
+                                <connections>
+                                    <action selector="editWish:" destination="USs-bD-93n" id="R4G-rf-iuS"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="facebook" id="1eW-45-tNN">
+                                <connections>
+                                    <action selector="shareToFacebook:" destination="USs-bD-93n" id="I0N-yB-hxQ"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="editList" destination="pej-7J-LYS" id="KD6-Hl-Byu"/>
                         <outlet property="similarTable" destination="uP9-QV-hpx" id="ntQ-sI-RCq"/>
                     </connections>
                 </viewController>
@@ -667,15 +697,29 @@
                         <viewLayoutGuide key="safeArea" id="b9m-Qk-lFC"/>
                     </view>
                     <navigationItem key="navigationItem" id="Mdc-0r-wmY">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="backBtn" id="YHO-L3-4O3">
+                            <connections>
+                                <action selector="goBack:" destination="xrC-uY-fm1" id="cCe-PL-DCK"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="wishListEmpty" id="YY5-MH-ohE"/>
-                            <barButtonItem title="Item" image="facebook" id="7C1-fq-yfw"/>
+                            <barButtonItem title="Item" image="wishListEmpty" id="YY5-MH-ohE">
+                                <connections>
+                                    <action selector="editWish:" destination="xrC-uY-fm1" id="BsF-qP-zfM"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="facebook" id="7C1-fq-yfw">
+                                <connections>
+                                    <action selector="shareToFacebook:" destination="xrC-uY-fm1" id="Uf5-s3-Pe7"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="ReturnTable" destination="kfR-1a-XpJ" id="vf6-k4-TMI"/>
                         <outlet property="SellerTable" destination="znK-My-UQe" id="DZY-Aw-mO4"/>
                         <outlet property="ShippingTable" destination="l13-QC-iNI" id="j8J-k6-gCs"/>
+                        <outlet property="editList" destination="YY5-MH-ohE" id="MWf-et-Pch"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b3c-U6-GYf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -799,15 +843,29 @@
                         <viewLayoutGuide key="safeArea" id="NOD-vr-di3"/>
                     </view>
                     <navigationItem key="navigationItem" id="2Wa-Ij-5ls">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="backBtn" id="zTE-5V-2of">
+                            <connections>
+                                <action selector="goBack:" destination="9gm-fP-C0A" id="MdI-3B-qZg"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" image="wishListEmpty" id="m1Q-ZA-hWa"/>
-                            <barButtonItem title="Item" image="facebook" id="kA3-EE-SjS"/>
+                            <barButtonItem title="Item" image="wishListEmpty" id="m1Q-ZA-hWa">
+                                <connections>
+                                    <action selector="editWish:" destination="9gm-fP-C0A" id="A2f-H7-Z2S"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="facebook" id="kA3-EE-SjS">
+                                <connections>
+                                    <action selector="shareToFacebook:" destination="9gm-fP-C0A" id="aWG-e9-Kvd"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="InfoTable" destination="6FJ-ri-eYH" id="iFn-3a-VDK"/>
+                        <outlet property="backBtn" destination="zTE-5V-2of" id="SDp-s5-x7c"/>
                         <outlet property="editList" destination="m1Q-ZA-hWa" id="s8d-Bi-hvf"/>
-                        <outlet property="facebook" destination="kA3-EE-SjS" id="ZDv-cd-lcF"/>
+                        <outlet property="facebook" destination="kA3-EE-SjS" id="dpU-6O-MLA"/>
                         <outlet property="infoIcon" destination="PG4-us-cyx" id="upO-R2-uKV"/>
                         <outlet property="infoTitle" destination="Oo8-eU-toA" id="BNr-UA-jpc"/>
                         <outlet property="itemName" destination="nz5-2Y-s5U" id="3VI-Ml-gF3"/>
@@ -825,6 +883,7 @@
         <scene sceneID="pq0-Bn-LTG">
             <objects>
                 <tabBarController hidesBottomBarWhenPushed="YES" id="Oo9-rX-QJc" customClass="DetailTabController" customModule="product_search_mobile1" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="yuH-wY-sUf"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3iP-M4-hxD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1320,7 +1379,7 @@
                         <outlet property="zipSwitch" destination="sTl-Zt-73T" id="CeA-SJ-5ek"/>
                         <outlet property="zipcode" destination="DzX-Sr-Ln2" id="kuR-ta-ywu"/>
                         <segue destination="1Vi-wG-l53" kind="show" identifier="getItemList" id="LDm-I1-TOF"/>
-                        <segue destination="Oo9-rX-QJc" kind="show" identifier="getDetailFromMain" id="xYO-90-vXl"/>
+                        <segue destination="Oo9-rX-QJc" kind="showDetail" identifier="getDetailFromMain" id="xYO-90-vXl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -1419,6 +1478,35 @@
             </objects>
             <point key="canvasLocation" x="-588" y="1104"/>
         </scene>
+        <!--Root View Controller-->
+        <scene sceneID="R4Y-Sl-CM1">
+            <objects>
+                <tableViewController id="a1a-Mi-m8l" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="OFe-KI-5jf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="RH8-DA-Lgz">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RH8-DA-Lgz" id="013-yc-Ult">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="a1a-Mi-m8l" id="FQ9-mo-510"/>
+                            <outlet property="delegate" destination="a1a-Mi-m8l" id="wRe-9N-3xM"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="iWc-mh-Wqj"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nfP-d3-sS2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-352" y="2802"/>
+        </scene>
         <!--Info-->
         <scene sceneID="5ak-Wt-WUh">
             <objects>
@@ -1503,6 +1591,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="backBtn" width="18" height="18"/>
         <image name="checked" width="50" height="50"/>
         <image name="facebook" width="24" height="24"/>
         <image name="unchecked" width="50" height="50"/>

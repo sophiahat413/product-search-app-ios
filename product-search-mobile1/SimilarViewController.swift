@@ -42,15 +42,28 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
 
     
     @IBOutlet weak var similarTable: UICollectionView!
+    @IBOutlet weak var editList: UIBarButtonItem!
     var info:[[String:Any]] = []
+    var itemInfo:[String:Any] = [:]
     var items:[itemType] = []
     var originalItems:[itemType] = []
     var sortFactor = "", sortOrder = "asc"
+    var price:String = ""
+    var name:String = ""
+    var storeUrl:String = ""
+    var id:String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        SwiftSpinner.show("Fetching Similar Items...")
         //print("tab in similar: ")
         //print(info)
-        
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            editList.image = UIImage(named:"wishListEmpty")
+        }
+        else{
+            editList.image = UIImage(named:"wishListFilled")
+            
+        }
         for i in info {
             var item = itemType(title:"", url:"", img:"", shipping:0.0, shippingS:"", days:0, daysS:"", price:0, priceS:"")
             let json = i["title"] as? [String:Any]
@@ -69,9 +82,20 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         similarTable.delegate = self
         originalItems = items
         similarTable.reloadData()
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            editList.image = UIImage(named:"wishListEmpty")
+        }
+        else{
+            editList.image = UIImage(named:"wishListFilled")
+        }
+    }
+    @objc func hideSpinner(){
+        SwiftSpinner.hide()
+    }
     @IBAction func sort(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
             case 0:
@@ -180,6 +204,28 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let url = URL(string: items[indexPath.row].url)
+        UIApplication.shared.open(url!, options: [:])
+    }
+    @IBAction func editWish(_ sender: UIBarButtonItem) {
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            UserDefaults.standard.set(itemInfo, forKey: id)
+            editList.image = UIImage(named:"wishListFilled")
+        }
+        else{
+            UserDefaults.standard.removeObject(forKey: id)
+            editList.image = UIImage(named:"wishListEmpty")
+            
+        }
+    }
+    @IBAction func goBack(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func shareToFacebook(_ sender: Any) {
+        let content = "Buy " + name + "for " + price + " from EBay!"
+        let newContent = content.encodeURIComponent()
+        let link = "https://www.facebook.com/sharer/sharer.php?u=www.ebay.com&quote=" + newContent!
+        let url = URL(string: link)
         UIApplication.shared.open(url!, options: [:])
     }
     /*

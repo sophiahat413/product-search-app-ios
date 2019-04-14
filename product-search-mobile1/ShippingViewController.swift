@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import SwiftSpinner
 
 class ShippingTableCell: UITableViewCell{
    
+
     @IBOutlet weak var sellerL: UILabel!
     @IBOutlet weak var sellerC: UILabel!
     @IBOutlet weak var sellerD: UILabel!
@@ -26,6 +28,8 @@ class ShippingTableCell: UITableViewCell{
     @IBOutlet weak var returnImg: UIImageView!
     @IBOutlet weak var feedbackC: UIImageView!
     @IBOutlet weak var feedbackL: UILabel!
+    
+    
     
     var url:String = ""
     @IBAction func viewStore(_ sender: UIButton) {
@@ -48,20 +52,29 @@ extension UIColor {
 
 class ShippingViewController: UIViewController,  UITableViewDataSource, UITableViewDelegate {
 
+    
+    @IBOutlet weak var editList: UIBarButtonItem!
     @IBOutlet weak var SellerTable: UITableView!
     @IBOutlet weak var ShippingTable: UITableView!
     @IBOutlet weak var ReturnTable: UITableView!
+    
     
     var seller:[String:Any] = [:]
     var shipping:[String:Any] = [:]
     var shipCost:String = ""
     var policy:[String:Any] = [:]
+    var itemInfo:[String:Any] = [:]
     var sellerKeys:[String] = []
     var shipKeys:[String] = []
     var returnKeys:[String] = []
+    var name:String = ""
+    var price:String = ""
+    var storeUrl = ""
+    var id = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        SwiftSpinner.show("Fetching Shipping Data...")
         print("ship cost get from main: ")
         print(shipCost)
        
@@ -83,6 +96,13 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
         shipKeys.insert("Default", at: 0)
         returnKeys = Array(policy.keys)
         returnKeys.insert("Default", at: 0)
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            editList.image = UIImage(named:"wishListEmpty")
+        }
+        else{
+            editList.image = UIImage(named:"wishListFilled")
+            
+        }
         if sellerKeys.count == 0 {
             SellerTable.isHidden = true
         }
@@ -98,9 +118,43 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
         SellerTable.tableFooterView = UIView(frame: .zero)
         ShippingTable.tableFooterView = UIView(frame: .zero)
         ReturnTable.tableFooterView = UIView(frame: .zero)
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
     }
+    @objc func hideSpinner(){
+        SwiftSpinner.hide()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            editList.image = UIImage(named:"wishListEmpty")
+        }
+        else{
+            editList.image = UIImage(named:"wishListFilled")
+        }
+    }
+    @IBAction func editWish(_ sender: UIBarButtonItem) {
+        if(UserDefaults.standard.object(forKey: id) == nil){
+            UserDefaults.standard.set(itemInfo, forKey: id)
+            editList.image = UIImage(named:"wishListFilled")
+        }
+        else{
+            UserDefaults.standard.removeObject(forKey: id)
+            editList.image = UIImage(named:"wishListEmpty")
+            
+        }
+    }
     
+    @IBAction func shareToFacebook(_ sender: UIBarButtonItem) {
+        let content = "Buy " + name + "for " + price + " from EBay!"
+        let newContent = content.encodeURIComponent()
+        let link = "https://www.facebook.com/sharer/sharer.php?u=www.ebay.com&quote=" + newContent!
+        let url = URL(string: link)
+        UIApplication.shared.open(url!, options: [:])
+    }
+    @IBAction func goBack(_ sender: UIBarButtonItem) {
+         self.dismiss(animated: true, completion: nil)
+       
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(tableView == SellerTable){
             //print("in seller table!")

@@ -168,6 +168,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             WishList.isHidden = false
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        WishList.reloadData()
+    }
     @IBAction func showControl(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
             case 0:
