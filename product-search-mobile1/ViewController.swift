@@ -130,7 +130,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
         session.resume()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationItem.title = "Product Search"
+        print("go back and reload");
+        getWishList();
+    }
     func getWishList(){
         print("wish list")
         wishList = []
@@ -143,34 +147,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 let dictionary = UserDefaults.standard.object(forKey: key) as? [String: Any]
                 //print(dictionary!)
                 cnt += 1
-                //totalPrice += dictionary?["priceN"] as! Double
+                totalPrice += dictionary?["priceN"] as! Double
                 wishList.append(dictionary!)
             }
         }
         WishList.reloadData()
-        if cnt == 0 {
-            noItems.isHidden = false
-            totalItems.isHidden = true
-            totalItemPrice.isHidden = true
-            WishList.isHidden = true
-        }
-        else{
-            if(cnt > 1){
-               totalItems.text = "WishList Total(" + String(cnt) + " items):"
-            }
-            else{
-               totalItems.text = "WishList Total(" + String(cnt) + " item):"
-            }
-            totalItemPrice.text = "$" + String(totalPrice)
-            noItems.isHidden = true
-            totalItems.isHidden = false
-            totalItemPrice.isHidden = false
-            WishList.isHidden = false
-        }
     }
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
+   
     @IBAction func showControl(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
             case 0:
@@ -182,6 +165,25 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             case 1:
                  form.isHidden = true
                  getWishList()
+                 if cnt == 0 {
+                    noItems.isHidden = false
+                    totalItems.isHidden = true
+                    totalItemPrice.isHidden = true
+                    WishList.isHidden = true
+                 }
+                 else{
+                    if(cnt > 1){
+                        totalItems.text = "WishList Total(" + String(cnt) + " items):"
+                    }
+                    else{
+                        totalItems.text = "WishList Total(" + String(cnt) + " item):"
+                    }
+                    totalItemPrice.text = "$" + String(totalPrice)
+                    noItems.isHidden = true
+                    totalItems.isHidden = false
+                    totalItemPrice.isHidden = false
+                    WishList.isHidden = false
+                 }
             default:
                 break
         }
@@ -354,7 +356,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 UserDefaults.standard.removeObject(forKey: id!)
                 cnt -= 1
                 totalPrice -= (wishList[indexPath.row]["priceN"] as? Double)!
-                WishList.reloadData()
                 if(cnt == 0){
                     noItems.isHidden = false
                     totalItems.isHidden = true
@@ -375,6 +376,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     totalItemPrice.isHidden = false
                     WishList.isHidden = false
                 }
+                WishList.reloadData()
             }
         }
     }

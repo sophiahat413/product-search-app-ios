@@ -13,6 +13,7 @@ class PhotosViewController: UIViewController {
 
     @IBOutlet weak var photos: UIScrollView!
     @IBOutlet weak var editList: UIBarButtonItem!
+    @IBOutlet weak var noPhotos: UILabel!
     var info:[[String:Any]] = []
     var itemInfo:[String:Any] = [:]
     var display:[Data] = []
@@ -31,49 +32,59 @@ class PhotosViewController: UIViewController {
         else{
             editList.image = UIImage(named:"wishListFilled")
         }
-        //print("get imahes: ")
-        //print(info)
-        for i in 0..<info.count {
-            let imgUrl = URL(string: info[i]["link"] as! String)
-            let session = URLSession(configuration: .default)
-            let downloadPicTask = session.dataTask(with: imgUrl!){
-                (data, response, error) in
-                if let e = error {
-                    print("Error downloading cat picture: \(e)")
-                } else {
-                    if let res = response as?
-                      HTTPURLResponse {
-                        print("Downloaded cat picture with response code \(res.statusCode)")
-                        if let imageData = data {
-                            DispatchQueue.main.async {
-                                self.frame.origin.y = self.photos.frame.size.height * CGFloat(i)
-                                self.frame.size = self.photos.frame.size
-                                let imgView = UIImageView(frame: self.frame)
-                                imgView.image =
-                                    UIImage(data:imageData)
-                                self.photos.addSubview(imgView)
-                            }
-                         } else {
-                                print("Couldn't get image: Image is nil")
-                            }
+        noPhotos.isHidden = true
+        photos.isHidden = true
+        if info.count == 0 {
+            noPhotos.isHidden = false
+            photos.isHidden = true
+        }
+        else{
+            for i in 0..<info.count {
+                let imgUrl = URL(string: info[i]["link"] as! String)
+                let session = URLSession(configuration: .default)
+                let downloadPicTask = session.dataTask(with: imgUrl!){
+                    (data, response, error) in
+                    if let e = error {
+                        print("Error downloading cat picture: \(e)")
                     } else {
-                        print("Couldn't get response code for some reason")
+                        if let res = response as?
+                          HTTPURLResponse {
+                            print("Downloaded cat picture with response code \(res.statusCode)")
+                            if let imageData = data {
+                                DispatchQueue.main.async {
+                                    self.frame.origin.y = self.photos.frame.size.height * CGFloat(i)
+                                    self.frame.size = self.photos.frame.size
+                                    let imgView = UIImageView(frame: self.frame)
+                                    imgView.image =
+                                        UIImage(data:imageData)
+                                    self.photos.addSubview(imgView)
+                                }
+                             } else {
+                                    print("Couldn't get image: Image is nil")
+                                }
+                        } else {
+                            print("Couldn't get response code for some reason")
+                        }
                     }
                 }
+                 downloadPicTask.resume()
             }
-             downloadPicTask.resume()
+            photos.contentSize = CGSize(width: photos.frame.size.width, height: (photos.frame.size.height * CGFloat(info.count)))
+            photos.delegate = self as? UIScrollViewDelegate
+            noPhotos.isHidden = true
+            photos.isHidden = false
         }
-        photos.contentSize = CGSize(width: photos.frame.size.width, height: (photos.frame.size.height * CGFloat(info.count)))
-        photos.delegate = self as? UIScrollViewDelegate
-         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
+            print("in photos: product is not in wish list")
         }
         else{
             editList.image = UIImage(named:"wishListFilled")
+            print("in photos: product is in wish list")
         }
     }
     @objc func hideSpinner(){

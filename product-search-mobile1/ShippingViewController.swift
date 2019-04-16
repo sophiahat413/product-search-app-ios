@@ -127,9 +127,11 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
     override func viewWillAppear(_ animated: Bool) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
+            print("in shipping: product is not in wish list")
         }
         else{
             editList.image = UIImage(named:"wishListFilled")
+            print("in shipping: product is in wish list")
         }
     }
     @IBAction func editWish(_ sender: UIBarButtonItem) {

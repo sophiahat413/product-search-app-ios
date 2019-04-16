@@ -94,6 +94,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
         editMsg.layer.cornerRadius = 8.0
         SwiftSpinner.show("Searching...")
+        itemTableView.tableFooterView = UIView(frame: .zero)
         print("getting results")
         print(text)
         self.navigationController?.navigationBar.topItem!.title = ""
@@ -169,8 +170,9 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell.editWish.setImage(UIImage(named:"wishListEmpty"), for:.normal)
         }
         else{
-            UserDefaults.standard.removeObject(forKey: id)
             cell.editWish.setImage(UIImage(named:"wishListFilled"), for:.normal)
+            //print("some new items are added")
+            //print(cell.itemTitle);
         }
         
         let tmpImg = "https" + item.img.dropFirst(4)

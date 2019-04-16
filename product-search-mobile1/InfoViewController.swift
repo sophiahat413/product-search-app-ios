@@ -137,9 +137,11 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     override func viewWillAppear(_ animated: Bool) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
+            print("in info: product is not in wish list")
         }
         else{
             editList.image = UIImage(named:"wishListFilled")
+            print("in info: product is in wish list")
         }
     }
     @objc func hideSpinner(){
@@ -168,10 +170,6 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
         let link = "https://www.facebook.com/sharer/sharer.php?u=" + storeUrl + "&quote=" + newContent!
         let url = URL(string: link)
         UIApplication.shared.open(url!, options: [:])
-    }
-    @IBAction func share(_ sender: UIButton) {
-        let testUrl = URL(string: "https://www.facebook.com/sharer/sharer.php?u=www.ebay.com&quote=%22hi%22")
-        UIApplication.shared.open(testUrl!, options: [:])
     }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         

@@ -18,19 +18,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="trojan" translatesAutoresizingMaskIntoConstraints="NO" id="wAg-hG-GaN">
-                                <rect key="frame" x="74" y="132" width="227" height="231"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FV-G4-O3d">
-                                <rect key="frame" x="95" y="389" width="184" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FV-G4-O3d">
+                                <rect key="frame" x="95.5" y="405" width="184" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="184" id="V42-tX-KQZ"/>
+                                    <constraint firstAttribute="height" constant="42" id="tPF-J9-cQG"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.66666668650000005" green="0.3553704325" blue="0.43413776450000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trojan" translatesAutoresizingMaskIntoConstraints="NO" id="wAg-hG-GaN">
+                                <rect key="frame" x="72.5" y="150" width="230" height="230"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="230" id="B4D-D5-ggo"/>
+                                    <constraint firstAttribute="width" constant="230" id="HXG-xH-Zix"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="wAg-hG-GaN" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="9tY-3A-Krp"/>
+                            <constraint firstItem="wAg-hG-GaN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="130" id="NEZ-LD-1hB"/>
+                            <constraint firstItem="6FV-G4-O3d" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="hBK-kX-xei"/>
+                            <constraint firstItem="6FV-G4-O3d" firstAttribute="top" secondItem="wAg-hG-GaN" secondAttribute="bottom" constant="25" id="uIZ-if-aUP"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

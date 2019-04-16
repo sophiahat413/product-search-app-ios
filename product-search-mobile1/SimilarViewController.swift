@@ -41,6 +41,7 @@ class SimilarViewCell: UICollectionViewCell {
 class SimilarViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate {
 
     
+    @IBOutlet weak var noSimilar: UILabel!
     @IBOutlet weak var similarTable: UICollectionView!
     @IBOutlet weak var editList: UIBarButtonItem!
     var info:[[String:Any]] = []
@@ -55,6 +56,8 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         SwiftSpinner.show("Fetching Similar Items...")
+        similarTable.isHidden = true
+        noSimilar.isHidden = true
         //print("tab in similar: ")
         //print(info)
         if(UserDefaults.standard.object(forKey: id) == nil){
@@ -82,15 +85,25 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         similarTable.delegate = self
         originalItems = items
         similarTable.reloadData()
+        if(items.count == 0){
+            similarTable.isHidden = true
+            noSimilar.isHidden = false
+        }
+        else{
+            similarTable.isHidden = false
+            noSimilar.isHidden = true
+        }
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
+            print("in similar: product is not in wish list")
         }
         else{
             editList.image = UIImage(named:"wishListFilled")
+            print("in similar: product is  in wish list")
         }
     }
     @objc func hideSpinner(){
