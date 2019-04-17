@@ -18,19 +18,8 @@ class ShippingTableCell: UITableViewCell{
     @IBOutlet weak var storeL: UILabel!
     @IBOutlet weak var storeC: UIButton!
     @IBOutlet weak var sellerImg: UIImageView!
-    @IBOutlet weak var shippingL: UILabel!
-    @IBOutlet weak var shippingC: UILabel!
-    @IBOutlet weak var shippingD: UILabel!
-    @IBOutlet weak var shippingImg: UIImageView!
-    @IBOutlet weak var returnL: UILabel!
-    @IBOutlet weak var returnC: UILabel!
-    @IBOutlet weak var returnD: UILabel!
-    @IBOutlet weak var returnImg: UIImageView!
     @IBOutlet weak var feedbackC: UIImageView!
     @IBOutlet weak var feedbackL: UILabel!
-    
-    
-    
     var url:String = ""
     @IBAction func viewStore(_ sender: UIButton) {
         let storeUrl = URL(string: url)
@@ -41,7 +30,7 @@ extension UIButton {
     func underlineMyText() {
         guard let text = self.titleLabel?.text else { return }
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: text.count))
+    attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: text.count))
         self.setAttributedTitle(attributedString, for: .normal)
     }
 }
@@ -55,10 +44,7 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
     
     @IBOutlet weak var editList: UIBarButtonItem!
     @IBOutlet weak var SellerTable: UITableView!
-    @IBOutlet weak var ShippingTable: UITableView!
-    @IBOutlet weak var ReturnTable: UITableView!
-    
-    
+
     var seller:[String:Any] = [:]
     var shipping:[String:Any] = [:]
     var shipCost:String = ""
@@ -71,55 +57,41 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
     var price:String = ""
     var storeUrl = ""
     var id = ""
+    var secCnt = 0
+    var headers:[String] = []
+    var headerImgs:[UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SwiftSpinner.show("Fetching Shipping Data...")
-        print("ship cost get from main: ")
-        print(shipCost)
-       
         SellerTable.delegate = self
         SellerTable.dataSource = self
         SellerTable.isScrollEnabled = false
-        ShippingTable.delegate = self
-        ShippingTable.dataSource = self
-        ShippingTable.isScrollEnabled = false
-        ReturnTable.delegate = self
-        ReturnTable.dataSource = self
-        ReturnTable.isScrollEnabled = false
         sellerKeys = Array(seller.keys)
-        sellerKeys.insert("Default", at: 0)
-        sellerKeys.append("")
-        shipKeys.append("Shipping Cost")
         shipKeys = Array(shipping.keys)
         shipKeys.insert("Shipping Cost", at: 0)
-        shipKeys.insert("Default", at: 0)
         returnKeys = Array(policy.keys)
-        returnKeys.insert("Default", at: 0)
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
         }
         else{
             editList.image = UIImage(named:"wishListFilled")
-            
         }
-        if sellerKeys.count == 0 {
-            SellerTable.isHidden = true
+        if sellerKeys.count != 0 {
+            headers.append("Seller")
+            headerImgs.append(UIImage(named:"Seller")!)
         }
-        if shipKeys.count == 0 {
-            ShippingTable.isHidden = true
+        if shipKeys.count != 0 {
+            headers.append("Shipping Info")
+            headerImgs.append(UIImage(named:"Shipping Info")!)
         }
-        if returnKeys.count == 0 {
-            ReturnTable.isHidden = true
+        if returnKeys.count != 0 {
+            headers.append("Return Policy")
+            headerImgs.append(UIImage(named:"Return Policy")!)
         }
         SellerTable.reloadData()
-        ShippingTable.reloadData()
-        ReturnTable.reloadData()
         SellerTable.tableFooterView = UIView(frame: .zero)
-        ShippingTable.tableFooterView = UIView(frame: .zero)
-        ReturnTable.tableFooterView = UIView(frame: .zero)
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
-        // Do any additional setup after loading the view.
     }
     @objc func hideSpinner(){
         SwiftSpinner.hide()
@@ -142,7 +114,6 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
         else{
             UserDefaults.standard.removeObject(forKey: id)
             editList.image = UIImage(named:"wishListEmpty")
-            
         }
     }
     
@@ -155,38 +126,57 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
     }
     @IBAction func goBack(_ sender: UIBarButtonItem) {
          self.dismiss(animated: true, completion: nil)
-       
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+       return headers.count
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view  = UIView()
+        let TopseperatorView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
+        TopseperatorView.backgroundColor = UIColor(red:0.90, green:0.88, blue:0.88, alpha:1.0)
+        let seperatorView = UIView(frame: CGRect(x: 0, y: 28, width: tableView.frame.width, height: 1))
+         seperatorView.backgroundColor = UIColor(red:0.90, green:0.88, blue:0.88, alpha:1.0)
+        let image = UIImageView(image: headerImgs[section])
+        image.frame = CGRect(x: 10, y: 0, width:25, height: 25)
+        let label = UILabel()
+        label.text = headers[section]
+        label.font = UIFont.boldSystemFont(ofSize: 17.0)
+        label.frame = CGRect(x: 50, y: 0, width:200, height: 30)
+        if section == 0 {
+            view.addSubview(TopseperatorView)
+        }
+        view.addSubview(image)
+        view.addSubview(label)
+        view.addSubview(seperatorView)
+        return view
+    }
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // UIView with darkGray background for section-separators as Section Footer
+        let v = UIView(frame: CGRect(x: 0, y:0, width: tableView.frame.width, height: 0.1))
+        if(section == headers.count-1){
+             v.backgroundColor = UIColor.white
+        }
+        else{
+            v.backgroundColor = UIColor(red:0.90, green:0.88, blue:0.88, alpha:1.0)
+        }
+        return v
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(tableView == SellerTable){
-            //print("in seller table!")
-            //print(SellerTable.contentSize.height)
-            //sellerHeight.constant = SellerTable.contentSize.height
-            return sellerKeys.count
+        if(headers[section] == "Seller"){
+             return sellerKeys.count
         }
-        else if(tableView == ShippingTable){
-            //print("in shipping table!")
-            //print(ShippingTable.contentSize.height)
-            //shippingHeight.constant = ShippingTable.contentSize.height
+        else if(headers[section] == "Shipping Info"){
             return shipKeys.count
         }
         else{
-            //returnHeight.constant = ReturnTable.contentSize.height
             return returnKeys.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if(tableView == SellerTable){
+        if(headers[indexPath.section] == "Seller"){
             let key = sellerKeys[indexPath.row]
-            if(key == "Default"){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell1", for: indexPath) as! ShippingTableCell
-                cell.sellerD.text = "Seller"
-                cell.sellerImg.image = UIImage(named: "Seller")
-                return cell
-            }
-            else if(key == "Store Name"){
+            if(key == "Store Name"){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell3", for: indexPath) as! ShippingTableCell
                  let json = seller[key] as? [String:Any]
                 cell.storeL.text = key
@@ -197,7 +187,7 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
                 cell.url = (json!["url"] as? String)!
                 return cell
             }
-            else if(key == "Feedback Rating Star"){
+            else if(key == "Feedback Star"){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell4", for: indexPath) as! ShippingTableCell
                 cell.feedbackL.text = key
                 let score = Int((seller["Feedback Score"] as? String)!)
@@ -236,55 +226,27 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell2", for: indexPath) as! ShippingTableCell
                 cell.sellerL.text = key
                 cell.sellerC.text = seller[key] as? String
-                //cell.separatorInset = .zero
-                if(indexPath.row != sellerKeys.count - 1){
-                    cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-                }
                 return cell
             }
         }
-        else if(tableView == ShippingTable){
+        else if(headers[indexPath.section] == "Shipping Info"){
             let key = shipKeys[indexPath.row]
-            if(key == "Default"){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "shippingCell1", for: indexPath) as! ShippingTableCell
-                cell.shippingD.text = "Shipping Info"
-                cell.shippingImg.image = UIImage(named: "Shipping Info")
-                return cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell2", for: indexPath) as! ShippingTableCell
+            cell.sellerL.text = key
+            if(key == "Shipping Cost"){
+                cell.sellerC.text = shipCost
             }
             else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "shippingCell2", for: indexPath) as! ShippingTableCell
-                cell.shippingL.text = key
-                if(key == "Shipping Cost"){
-                    cell.shippingC.text = shipCost
-                }
-                else{
-                    cell.shippingC.text = shipping[key] as? String
-                }
-                //cell.separatorInset = .zero
-                if(indexPath.row != shipKeys.count - 1){
-                    cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-                }
-                return cell
+                cell.sellerC.text = shipping[key] as? String
             }
+            return cell
         }
         else{
             let key = returnKeys[indexPath.row]
-            if(key == "Default"){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "returnCell1", for: indexPath) as! ShippingTableCell
-                cell.returnD.text = "Return Policy"
-                cell.returnImg.image = UIImage(named: "Return Policy")
-                return cell
-            }
-            else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "returnCell2", for: indexPath) as! ShippingTableCell
-                cell.returnL.text = key
-                cell.returnC.text = policy[key] as? String
-                //cell.separatorInset = .zero
-                if(indexPath.row != returnKeys.count - 1){
-                    cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-                }
-                return cell
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell2", for: indexPath) as! ShippingTableCell
+            cell.sellerL.text = key
+            cell.sellerC.text = policy[key] as? String
+            return cell
         }
     }
 }

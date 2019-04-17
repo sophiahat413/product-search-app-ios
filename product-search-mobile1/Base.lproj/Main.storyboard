@@ -410,94 +410,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l13-QC-iNI">
-                                <rect key="frame" x="14" y="253" width="387" height="170"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shippingCell1" rowHeight="31" id="PVV-g0-Yr0" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="387" height="31"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.94999999999999996" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PVV-g0-Yr0" id="Ylt-tC-JlU">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="30.666666666666668"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="itP-Nr-q8K">
-                                                    <rect key="frame" x="11" y="1" width="28" height="29"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="28" id="hJp-pM-c3F"/>
-                                                        <constraint firstAttribute="height" constant="28" id="i6C-Vr-9d6"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Shipping Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37d-gB-hQe">
-                                                    <rect key="frame" x="47" y="6" width="97" height="18"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="itP-Nr-q8K" firstAttribute="leading" secondItem="Ylt-tC-JlU" secondAttribute="leading" constant="11" id="e7r-vD-BzM"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="shippingD" destination="37d-gB-hQe" id="EJV-Ru-lpg"/>
-                                            <outlet property="shippingImg" destination="itP-Nr-q8K" id="l0d-1K-var"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shippingCell2" rowHeight="30" id="Egd-6Q-ibl" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="59" width="387" height="30"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Egd-6Q-ibl" id="Qmy-wW-cOZ" customClass="ShippTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="29.666666666666668"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMT-rx-525">
-                                                    <rect key="frame" x="0.0" y="4" width="153" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="153" id="T9x-JU-LGh"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ny1-uh-dLt">
-                                                    <rect key="frame" x="201" y="4" width="186" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="186" id="q8W-Kf-f9n"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="ny1-uh-dLt" firstAttribute="leading" secondItem="dMT-rx-525" secondAttribute="trailing" constant="28" id="hoa-nw-AMn"/>
-                                                <constraint firstItem="dMT-rx-525" firstAttribute="leading" secondItem="Qmy-wW-cOZ" secondAttribute="leadingMargin" id="omM-FX-73p"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="shippingC" destination="ny1-uh-dLt" id="j6K-1e-Xws"/>
-                                            <outlet property="shippingL" destination="dMT-rx-525" id="Iby-uP-4fC"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="xrC-uY-fm1" id="gHK-dQ-fam"/>
-                                    <outlet property="delegate" destination="xrC-uY-fm1" id="RpA-PP-Npn"/>
-                                </connections>
-                            </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="znK-My-UQe">
-                                <rect key="frame" x="14" y="80" width="387" height="172"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="30" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="znK-My-UQe">
+                                <rect key="frame" x="14" y="80" width="387" height="591"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="sellerCell1" rowHeight="32" id="GyW-2O-cif" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="387" height="32"/>
+                                        <rect key="frame" x="0.0" y="30" width="387" height="32"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GyW-2O-cif" id="0wC-9G-2Ke">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="31.666666666666668"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="387" height="32"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fxm-Yh-r2s">
@@ -525,10 +447,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="sellerCell2" rowHeight="30" id="jlF-rg-XQM" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="60" width="387" height="30"/>
+                                        <rect key="frame" x="0.0" y="62" width="387" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jlF-rg-XQM" id="YuT-XA-Tuo" customClass="ShippTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="29.666666666666668"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="387" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fSf-Mb-aN1">
@@ -561,10 +483,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="sellerCell3" id="PvF-cG-3uW" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="90" width="387" height="30"/>
+                                        <rect key="frame" x="0.0" y="92" width="387" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PvF-cG-3uW" id="OBk-9d-SaP" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="29.666666666666668"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="387" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aiR-1D-yRP">
@@ -577,7 +499,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2N5-Qt-Wqz">
-                                                    <rect key="frame" x="280" y="-1" width="87" height="30"/>
+                                                    <rect key="frame" x="212" y="-1" width="164" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal">
                                                         <attributedString key="attributedTitle">
@@ -601,20 +523,23 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="sellerCell4" id="Njo-E8-Zxi" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="120" width="387" height="30"/>
+                                        <rect key="frame" x="0.0" y="122" width="387" height="30"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Njo-E8-Zxi" id="uSS-0j-OYp">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="29.666666666666668"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="387" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vE0-hi-KTR">
-                                                    <rect key="frame" x="11" y="8" width="174" height="21"/>
+                                                    <rect key="frame" x="20" y="8" width="153" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="153" id="o2v-Pu-jh6"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" red="0.43378941970000001" green="0.43378941970000001" blue="0.43378941970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kUs-yb-QOZ">
-                                                    <rect key="frame" x="273" y="0.0" width="26" height="29"/>
+                                                    <rect key="frame" x="283" y="0.0" width="24" height="29"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="27F-nD-bJj"/>
                                                         <constraint firstAttribute="height" constant="24" id="LrQ-xz-uvz"/>
@@ -622,7 +547,8 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="kUs-yb-QOZ" firstAttribute="leading" secondItem="vE0-hi-KTR" secondAttribute="trailing" constant="95" id="ozu-FF-3zR"/>
+                                                <constraint firstItem="vE0-hi-KTR" firstAttribute="leading" secondItem="uSS-0j-OYp" secondAttribute="leading" constant="20" id="j6e-8S-BJF"/>
+                                                <constraint firstItem="kUs-yb-QOZ" firstAttribute="leading" secondItem="vE0-hi-KTR" secondAttribute="trailing" constant="110" id="ozu-FF-3zR"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -634,81 +560,6 @@
                                 <connections>
                                     <outlet property="dataSource" destination="xrC-uY-fm1" id="CRF-zc-571"/>
                                     <outlet property="delegate" destination="xrC-uY-fm1" id="0kZ-Cj-iIo"/>
-                                </connections>
-                            </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kfR-1a-XpJ">
-                                <rect key="frame" x="14" y="423" width="387" height="198"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="returnCell1" rowHeight="31" id="Bhm-bi-82h" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="387" height="31"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bhm-bi-82h" id="Ka0-ge-fEP">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="30.666666666666668"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6gr-vf-qDB">
-                                                    <rect key="frame" x="11" y="0.0" width="28" height="28"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="28" id="F92-qC-LXw"/>
-                                                        <constraint firstAttribute="width" constant="28" id="yJK-F1-4Fp"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Return Policy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUg-S2-ttc">
-                                                    <rect key="frame" x="47" y="-1" width="118" height="33"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="6gr-vf-qDB" firstAttribute="leading" secondItem="Ka0-ge-fEP" secondAttribute="leading" constant="11" id="uza-7K-r6L"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="returnD" destination="AUg-S2-ttc" id="Ilz-hf-UYZ"/>
-                                            <outlet property="returnImg" destination="6gr-vf-qDB" id="qbv-kI-xmq"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="returnCell2" rowHeight="30" id="gUN-EF-rdg" customClass="ShippingTableCell" customModule="product_search_mobile1" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="59" width="387" height="30"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gUN-EF-rdg" id="sza-Lu-QZX">
-                                            <rect key="frame" x="0.0" y="0.0" width="387" height="29.666666666666668"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IO1-bB-EfJ">
-                                                    <rect key="frame" x="9" y="4" width="200" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fBt-g4-7ST">
-                                                    <rect key="frame" x="186" y="3" width="190" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="190" id="s1Q-zi-QAx"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="fBt-g4-7ST" secondAttribute="trailing" constant="11" id="rA7-Vm-W8b"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="returnC" destination="fBt-g4-7ST" id="TrA-fY-aOw"/>
-                                            <outlet property="returnL" destination="IO1-bB-EfJ" id="pSj-4M-Swr"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="xrC-uY-fm1" id="yjZ-E8-a4S"/>
-                                    <outlet property="delegate" destination="xrC-uY-fm1" id="pQx-9t-P89"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -735,9 +586,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="ReturnTable" destination="kfR-1a-XpJ" id="vf6-k4-TMI"/>
                         <outlet property="SellerTable" destination="znK-My-UQe" id="DZY-Aw-mO4"/>
-                        <outlet property="ShippingTable" destination="l13-QC-iNI" id="j8J-k6-gCs"/>
                         <outlet property="editList" destination="YY5-MH-ohE" id="MWf-et-Pch"/>
                     </connections>
                 </viewController>

@@ -28,6 +28,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var key = "", cat = "", dis = "", loc = "", text = "", invalid = true, valid = false, requestURL = ""
     var New = false, Used = false, Unspecified = false, Pickup = false, FreeShip = false
     var zipcodes:[String] = Array()
+    var userLocation:String = ""
     let url = URL(string: "https://ipapi.co/json/")
     var results:[String] = Array()
     var wishList:[[String:Any]] = []
@@ -117,9 +118,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                         return
                     }
                     print("print postal: ")
-                    self.loc = json["postal"] as! String
-                    print(self.loc)
-                    
+                    DispatchQueue.main.async{
+                        self.userLocation = json["postal"] as! String
+                        print(self.userLocation)
+                    }
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
@@ -524,6 +526,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         dis = distance.text!
         if zipcode.text != ""{
             loc = zipcode.text!
+        }
+        else{
+            loc = userLocation
         }
         if(dis == ""){
             dis = "10"
