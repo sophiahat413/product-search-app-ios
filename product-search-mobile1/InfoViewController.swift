@@ -31,6 +31,7 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     @IBOutlet weak var infoTitle: UILabel!
     @IBOutlet weak var noSpecific: UILabel!
     @IBOutlet weak var InfoTable: UITableView!
+    @IBOutlet weak var editMsg: UILabel!
     //@IBOutlet weak var InfoTable: UITableView!
     
     //@IBOutlet weak var tableHeight: NSLayoutConstraint!
@@ -42,6 +43,7 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     var name:String = ""
     var price:String = ""
     var storeUrl :String = ""
+    var msg:String = ""
     var imgs:[String] = []
     var display:[Data] = []
     var frame = CGRect(x:0, y:0, width:0, height:0)
@@ -56,10 +58,11 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
             editList.image = UIImage(named:"wishListFilled")
             
         }
-        //print("get title from tab info!")
-        //print(name)
-        //print(imgs)
-    //navigationController?.isNavigationBarHidden = true
+        editMsg.isHidden = true
+        editMsg.layer.zPosition = 1;
+        editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        editMsg.layer.cornerRadius = 5.0
+        editMsg.layer.masksToBounds = true
         keys = Array(info.keys)
         InfoTable.isScrollEnabled = true
         
@@ -137,37 +140,41 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
     override func viewWillAppear(_ animated: Bool) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
-            print("in info: product is not in wish list")
+            //print("in info: product is not in wish list")
         }
         else{
             editList.image = UIImage(named:"wishListFilled")
-            print("in info: product is in wish list")
+            //print("in info: product is in wish list")
         }
     }
     @objc func hideSpinner(){
         SwiftSpinner.hide()
     }
-    
     @IBAction func editWish(_ sender: UIBarButtonItem) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             UserDefaults.standard.set(itemInfo, forKey: id)
             editList.image = UIImage(named:"wishListFilled")
+            editMsg.text = name + " was added to the wishList"
         }
         else{
             UserDefaults.standard.removeObject(forKey: id)
             editList.image = UIImage(named:"wishListEmpty")
-            
+            editMsg.text = name + " was removed from the wishList"
+        }
+        editMsg.frame.size.height = editMsg.retrieveTextHeight()
+        editMsg.isHidden = false
+        let when = DispatchTime.now() + 1
+        DispatchQueue.main.asyncAfter(deadline: when){
+            self.editMsg.isHidden = true
         }
     }
-   
     @IBAction func goBack(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     @IBAction func shareToFacebook(_ sender: Any) {
         let content = "Buy " + name + " for " + price + " from EBay!"
         let newContent = content.encodeURIComponent()
-        let link = "https://www.facebook.com/sharer/sharer.php?u=" + storeUrl + "&quote=" + newContent!
+        let link = "https://www.facebook.com/sharer/sharer.php?u=" + storeUrl + "&quote=" + newContent! + "&hashtag=%23CSCI571Spring2019Ebay"
         let url = URL(string: link)
         UIApplication.shared.open(url!, options: [:])
     }
@@ -177,8 +184,10 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
             pageControl.currentPage = Int(pageNumber)
     
     }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scroll: UIScrollView) {
+        if scroll == scrollView {
             scrollView.contentOffset.y = 0.0
+        }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

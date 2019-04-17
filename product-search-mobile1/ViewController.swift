@@ -37,6 +37,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var currentTitle:String = ""
     var currentPrice:String = ""
     var currentShipCost:String = ""
+    var currentItemLink:String = ""
     var infoOldUrl:String = ""
     var currentSpecifics:[String:Any] = [:]
     var currentImg:[String] = []
@@ -145,15 +146,39 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         let regex = try! NSRegularExpression(pattern: ".*[A-Za-z].*")
         for key in UserDefaults.standard.dictionaryRepresentation().keys{
             let range = NSRange(location: 0, length: key.count)
-            if regex.firstMatch(in: key, options: [], range: range) == nil {
+            if regex.firstMatch(in: key, options: [], range: range) == nil && key.count > 0 {
                 let dictionary = UserDefaults.standard.object(forKey: key) as? [String: Any]
-                //print(dictionary!)
-                cnt += 1
-                totalPrice += dictionary?["priceN"] as! Double
-                wishList.append(dictionary!)
+                if(!(dictionary?.isEmpty)!){
+                    cnt += 1
+                    totalPrice += dictionary?["priceN"] as! Double
+                    wishList.append(dictionary!)
+                }
             }
         }
         WishList.reloadData()
+        if(cnt > 0){
+            if(cnt > 1){
+                totalItems.text = "WishList Total(" + String(cnt) + " items):"
+            }
+            else {
+                totalItems.text = "WishList Total(" + String(cnt) + " item):"
+            }
+            totalItemPrice.text = "$" + String(totalPrice)
+        }
+        if(form.isHidden == true){
+            if cnt == 0 {
+                noItems.isHidden = false
+                totalItems.isHidden = true
+                totalItemPrice.isHidden = true
+                WishList.isHidden = true
+            }
+            else{
+                noItems.isHidden = true
+                totalItems.isHidden = false
+                totalItemPrice.isHidden = false
+                WishList.isHidden = false
+            }
+        }
     }
    
     @IBAction func showControl(_ sender: UISegmentedControl) {
@@ -174,13 +199,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     WishList.isHidden = true
                  }
                  else{
-                    if(cnt > 1){
-                        totalItems.text = "WishList Total(" + String(cnt) + " items):"
-                    }
-                    else{
-                        totalItems.text = "WishList Total(" + String(cnt) + " item):"
-                    }
-                    totalItemPrice.text = "$" + String(totalPrice)
                     noItems.isHidden = true
                     totalItems.isHidden = false
                     totalItemPrice.isHidden = false
@@ -237,8 +255,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                             return
                         }
                         resZips = json
-                        self.changeZipcodes(resZips)
                         DispatchQueue.main.async {
+                            self.changeZipcodes(resZips)
                             self.autoComplete.reloadData()
                         }
                     } catch let error as NSError {
@@ -344,6 +362,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                         = user["specifics"] as! [String : Any]
                     self.currentImg = user["image"] as! [String]
                     self.currentItemInfo = user
+                    self.currentItemLink = user["link"] as! String
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "getDetailFromMain", sender: nil)
                     }
@@ -395,6 +414,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             vc.imgs = currentImg
             vc.name = currentTitle
             vc.price = currentPrice
+            vc.storeUrl = currentItemLink
         }
     }
     func getInfo(id: String, userCompletionHandler: @escaping([String:Any]?, Error?) -> Void){
@@ -611,7 +631,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func reset(_ sender: UIButton) {
         keyword.text = ""
-        category.text = ""
+        category.text = "All"
         new.isSelected = false
         used.isSelected = false
         unspecified.isSelected = false
@@ -620,6 +640,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         distance.text = ""
         zipcode.text = ""
         zipSwitch.isOn = true
+        zipcode.isHidden = false
+        clearTop.constant = 20
+        searchTop.constant = 20
     }
     
     @objc func hideKeywordError() {

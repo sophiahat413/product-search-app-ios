@@ -73,6 +73,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var currentTitle:String = ""
     var currentId:String = ""
     var currentPrice:String = ""
+    var currentItemLink:String = ""
     var currentShipCost:String = ""
     var currentShip:[String:Any] = [:]
     var currentSpecifics:[String:Any] = [:]
@@ -92,7 +93,8 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         editMsg.isHidden = true
         editMsg.layer.zPosition = 1;
         editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
-        editMsg.layer.cornerRadius = 8.0
+        editMsg.layer.cornerRadius = 5.0
+        editMsg.layer.masksToBounds = true
         SwiftSpinner.show("Searching...")
         itemTableView.tableFooterView = UIView(frame: .zero)
         print("getting results")
@@ -224,6 +226,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         infoOldUrl = "https://product-search-backend.appspot.com/getSingle?itemId=" + currentId
         getInfo(id: currentId, userCompletionHandler: { user, error in
             if let user = user{
+                self.currentItemLink = user["link"] as! String
                 self.currentSpecifics = user["specifics"] as! [String : Any]
                 self.currentImg = user["image"] as! [String]
                 self.currentItemInfo = user
@@ -243,6 +246,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         vc.name = currentTitle
         vc.price = currentPrice
         vc.itemInfo = currentInfo
+        vc.storeUrl = currentItemLink
     }
     func getInfo(id: String, userCompletionHandler: @escaping([String:Any]?, Error?) -> Void){
         let infoUrl = URL(string: infoOldUrl)

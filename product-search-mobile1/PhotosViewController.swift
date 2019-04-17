@@ -14,6 +14,7 @@ class PhotosViewController: UIViewController {
     @IBOutlet weak var photos: UIScrollView!
     @IBOutlet weak var editList: UIBarButtonItem!
     @IBOutlet weak var noPhotos: UILabel!
+    @IBOutlet weak var editMsg: UILabel!
     var info:[[String:Any]] = []
     var itemInfo:[String:Any] = [:]
     var display:[Data] = []
@@ -26,6 +27,11 @@ class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         SwiftSpinner.show("Fetching Google Images...")
+        editMsg.isHidden = true
+        editMsg.layer.zPosition = 1;
+        editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        editMsg.layer.cornerRadius = 5.0
+        editMsg.layer.masksToBounds = true
         if(UserDefaults.standard.object(forKey: id) == nil){
             editList.image = UIImage(named:"wishListEmpty")
         }
@@ -98,11 +104,18 @@ class PhotosViewController: UIViewController {
         if(UserDefaults.standard.object(forKey: id) == nil){
             UserDefaults.standard.set(itemInfo, forKey: id)
             editList.image = UIImage(named:"wishListFilled")
+            editMsg.text = name + " was added to the wishList"
         }
         else{
             UserDefaults.standard.removeObject(forKey: id)
             editList.image = UIImage(named:"wishListEmpty")
-            
+            editMsg.text = name + " was removed from the wishList"
+        }
+        editMsg.frame.size.height = editMsg.retrieveTextHeight()
+        editMsg.isHidden = false
+        let when = DispatchTime.now() + 1
+        DispatchQueue.main.asyncAfter(deadline: when){
+            self.editMsg.isHidden = true
         }
     }
     @IBAction func goBack(_ sender: UIBarButtonItem) {
@@ -112,7 +125,7 @@ class PhotosViewController: UIViewController {
     @IBAction func shareToFacebook(_ sender: Any) {
         let content = "Buy " + name + " for " + price + " from EBay!"
         let newContent = content.encodeURIComponent()
-        let link = "https://www.facebook.com/sharer/sharer.php?u=" + storeUrl + "&quote=" + newContent!
+        let link = "https://www.facebook.com/sharer/sharer.php?u=" + storeUrl + "&quote=" + newContent! + "&hashtag=%23CSCI571Spring2019Ebay"
         let url = URL(string: link)
         UIApplication.shared.open(url!, options: [:])
     }
