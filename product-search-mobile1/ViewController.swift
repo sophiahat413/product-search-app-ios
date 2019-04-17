@@ -66,6 +66,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Product Search"
         navigationController?.navigationItem.title = "Product Search"
         let thePicker = UIPickerView()
         thePicker.backgroundColor = UIColor.white
@@ -135,7 +136,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationItem.title = "Product Search"
-        print("go back and reload");
+        navigationItem.title = "Product Search"
         getWishList();
     }
     func getWishList(){

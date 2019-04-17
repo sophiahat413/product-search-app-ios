@@ -90,6 +90,8 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.backBarButtonItem?.title = ""
+        navigationController?.navigationItem.title = "Search Results"
+        navigationItem.title = "Search Results"
         editMsg.isHidden = true
         editMsg.layer.zPosition = 1;
         editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
@@ -148,6 +150,7 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationItem.title = "Search Results"
         itemTableView.reloadData()
     }
     @objc func hideSpinner() {
