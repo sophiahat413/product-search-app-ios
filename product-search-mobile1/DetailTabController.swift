@@ -57,7 +57,7 @@ class DetailTabController: UITabBarController {
         //print(tmpName as Any)
         infoOldUrl = "https://product-search-advance.appspot.com/getSingle?itemId=" + id + "&title=" + tmpName
         //print("get details from back url")
-        //print(infoOldUrl)
+        print(infoOldUrl)
         getInfo(id: id, userCompletionHandler: { user, error in
             if let user = user{
                 self.similarItems = user["similarItem"] as! [[String : Any]]

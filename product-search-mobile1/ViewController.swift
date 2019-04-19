@@ -76,11 +76,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         totalItemPrice.isHidden = true
         totalItems.isHidden = true
         WishList.isHidden = true
+        zipSwitch.isOn = false
+        zipcode.isHidden = true
         noItems.isHidden = true
         keyword.delegate = self
         category.delegate = self
         distance.delegate = self
         zipcode.delegate = self
+        clearTop.constant = -10
+        searchTop.constant = -10
         zipcode.addTarget(self, action: #selector(searchRecords(_ :)), for: .editingChanged)
         autoComplete.delegate = self
         autoComplete.dataSource = self
@@ -257,7 +261,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                         }
                         resZips = json
                         DispatchQueue.main.async {
-                            self.changeZipcodes(resZips)
+                            self.zipcodes = resZips
+                            //self.changeZipcodes(resZips)
                             self.autoComplete.reloadData()
                         }
                     } catch let error as NSError {
@@ -269,6 +274,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 }
             }
             auto.resume()
+            print("get zipcodes when type!!")
+            print(zipcodes)
         }
         else{
             autoComplete.isHidden = true
@@ -640,10 +647,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         freeship.isSelected = false
         distance.text = ""
         zipcode.text = ""
-        zipSwitch.isOn = true
-        zipcode.isHidden = false
-        clearTop.constant = 20
-        searchTop.constant = 20
+        zipSwitch.isOn = false
+        zipcode.isHidden = true
+        clearTop.constant = -10
+        searchTop.constant = -10
     }
     
     @objc func hideKeywordError() {

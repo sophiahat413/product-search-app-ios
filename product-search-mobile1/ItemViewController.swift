@@ -132,10 +132,10 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         self.items.append(item)
                     }
                     DispatchQueue.main.async {
-                        self.itemTableView.reloadData()
                         if self.items.count == 0{
                             self.createAlert(title: "No Results!", message: "Failed to fetch search results")
                         }
+                        self.itemTableView.reloadData()
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
