@@ -12,6 +12,12 @@ extension String {
     func matches(_ regex: String) -> Bool {
         return self.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
     }
+    func isEmptyOrWhitespace() -> Bool {
+        if(self.isEmpty) {
+            return true
+        }
+        return (self.trimmingCharacters(in: NSCharacterSet.whitespaces) == "")
+    }
 }
 class ViewTableCell: UITableViewCell{
     @IBOutlet weak var name: UILabel!
@@ -62,6 +68,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var clearTop: NSLayoutConstraint!
     @IBOutlet weak var zipSwitch: UISwitch!
     @IBOutlet weak var keywordError: UILabel!
+    @IBOutlet weak var errorTop: NSLayoutConstraint!
     @IBOutlet weak var autoComplete: UITableView!
     
     override func viewDidLoad() {
@@ -156,6 +163,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 if(!(dictionary?.isEmpty)!){
                     cnt += 1
                     totalPrice += dictionary?["priceN"] as! Double
+                    totalPrice = (totalPrice * 1000).rounded() / 1000
                     wishList.append(dictionary!)
                 }
             }
@@ -262,7 +270,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                         resZips = json
                         DispatchQueue.main.async {
                             self.zipcodes = resZips
-                            //self.changeZipcodes(resZips)
+                            if self.zipcodes.count == 0 {
+                                self.autoComplete.isHidden = true
+                            }
                             self.autoComplete.reloadData()
                         }
                     } catch let error as NSError {
@@ -385,6 +395,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 UserDefaults.standard.removeObject(forKey: id!)
                 cnt -= 1
                 totalPrice -= (wishList[indexPath.row]["priceN"] as? Double)!
+                totalPrice = (totalPrice * 1000).rounded() / 1000
                 if(cnt == 0){
                     noItems.isHidden = false
                     totalItems.isHidden = true
@@ -513,7 +524,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     @IBAction func submit(_ sender: UIButton) {
-        if(keyword.text?.isEmpty ?? true){
+        if(keyword.text!.isEmptyOrWhitespace()){
+            if(zipSwitch.isOn == true){
+                errorTop.constant = 55
+            }
+            else{
+                errorTop.constant = 82
+            }
             print("keyword is empty!")
             keywordError.text = "Keyword Is Mandatory"
             keywordError.isHidden = false
@@ -521,7 +538,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             return
         }
         if(zipSwitch.isOn == true){
-            if(zipcode.text?.isEmpty ?? true){
+            errorTop.constant = 55
+            if(zipcode.text!.isEmptyOrWhitespace()){
                 keywordError.isHidden = false
                 keywordError.text = "Zipcode Is Mandatory"
                 Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideKeywordError), userInfo: nil, repeats: false)
@@ -549,6 +567,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         requestURL = "https://product-search-advance.appspot.com/listGet?keyword=";
         //equestURL = "http://localhost:8080/listGet?keyword=";
         key = keyword.text!
+        key = key.encodeURIComponent()!
         requestURL += key
         cat = category.text!
         dis = distance.text!

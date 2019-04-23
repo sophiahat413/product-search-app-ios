@@ -42,9 +42,13 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
 
     
     @IBOutlet weak var noSimilar: UILabel!
+    @IBOutlet weak var sortBy: UILabel!
+    @IBOutlet weak var orderBy: UILabel!
     @IBOutlet weak var similarTable: UICollectionView!
     @IBOutlet weak var editList: UIBarButtonItem!
     @IBOutlet weak var editMsg: UILabel!
+    @IBOutlet weak var sortLabel: UISegmentedControl!
+    @IBOutlet weak var sortingOrder: UISegmentedControl!
     
     var info:[[String:Any]] = []
     var itemInfo:[String:Any] = [:]
@@ -61,10 +65,15 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         similarTable.isHidden = true
         noSimilar.isHidden = true
         editMsg.isHidden = true
+        sortLabel.isHidden = true
+        sortingOrder.isHidden = true
+        sortBy.isHidden = true
+        orderBy.isHidden = true
         editMsg.layer.zPosition = 1;
         editMsg.layer.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
         editMsg.layer.cornerRadius = 5.0
         editMsg.layer.masksToBounds = true
+        sortingOrder.isUserInteractionEnabled = false
         //print("tab in similar: ")
         //print(info)
         if(UserDefaults.standard.object(forKey: id) == nil){
@@ -95,10 +104,18 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         if(items.count == 0){
             similarTable.isHidden = true
             noSimilar.isHidden = false
+            sortLabel.isHidden = true
+            sortingOrder.isHidden = true
+            sortBy.isHidden = true
+            orderBy.isHidden = true
         }
         else{
             similarTable.isHidden = false
             noSimilar.isHidden = true
+            sortLabel.isHidden = false
+            sortingOrder.isHidden = false
+            sortBy.isHidden = false
+            orderBy.isHidden = false
         }
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(hideSpinner), userInfo: nil, repeats: false)
         // Do any additional setup after loading the view.
@@ -120,14 +137,19 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         switch sender.selectedSegmentIndex{
             case 0:
                 sortFactor = "default"
+                sortingOrder.isUserInteractionEnabled = false
             case 1:
                 sortFactor = "title"
+                sortingOrder.isUserInteractionEnabled = true
             case 2:
                 sortFactor = "price"
+                sortingOrder.isUserInteractionEnabled = true
             case 3:
                 sortFactor = "days"
+                sortingOrder.isUserInteractionEnabled = true
             case 4:
                 sortFactor = "shipping"
+                sortingOrder.isUserInteractionEnabled = true
             default: break
         }
         changeOrder()
@@ -195,31 +217,35 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         cell.itemCost.text = items[indexPath.row].shippingS
         cell.itemDays.text = items[indexPath.row].daysS
         cell.itemPrice.text = items[indexPath.row].priceS
-        
-        let imgUrl = URL(string: items[indexPath.row].img )
-        let session = URLSession(configuration: .default)
-        let downloadPicTask = session.dataTask(with: imgUrl!) {
-            (data, response, error) in
-            if let e = error{
-                 print("Error downloading cat picture: \(e)")
-            }
-            else{
-                if let res = response as? HTTPURLResponse{
-                    if let imageData = data {
-                        DispatchQueue.main.async {
-                            cell.itemImg.image = UIImage(data: imageData)
+        if items[indexPath.row].img == "N/A" || items[indexPath.row].img.isEmptyOrWhitespace() {
+            cell.itemImg.image = UIImage(named: "brokenImage")
+        }
+        else{
+            let imgUrl = URL(string: items[indexPath.row].img )
+            let session = URLSession(configuration: .default)
+            let downloadPicTask = session.dataTask(with: imgUrl!) {
+                (data, response, error) in
+                if let e = error{
+                     print("Error downloading cat picture: \(e)")
+                }
+                else{
+                    if let res = response as? HTTPURLResponse{
+                        if let imageData = data {
+                            DispatchQueue.main.async {
+                                cell.itemImg.image = UIImage(data: imageData)
+                            }
+                        }
+                        else{
+                            print("Couldn't get image: Image is nil")
                         }
                     }
                     else{
-                        print("Couldn't get image: Image is nil")
+                        print("Couldn't get response code for some reason")
                     }
                 }
-                else{
-                    print("Couldn't get response code for some reason")
-                }
             }
+            downloadPicTask.resume()
         }
-        downloadPicTask.resume()
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

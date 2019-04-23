@@ -105,7 +105,11 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         itemTableView.delegate = self
         itemTableView.dataSource = self
         let tmpUrl:String = text.replacingOccurrences(of: " ", with: "%20")
+         print("tmp url")
+        print(tmpUrl)
         let reqUrl = URL(string: tmpUrl)
+        print("req url")
+        print(reqUrl)
         let auto = URLSession.shared.dataTask(with: reqUrl!){
             (data, response, error) in
             if let data = data {
@@ -179,34 +183,44 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //print("some new items are added")
             //print(cell.itemTitle);
         }
-        
-        let tmpImg = "https" + item.img.dropFirst(4)
-        let imgUrl = URL(string: tmpImg)
-        let session = URLSession(configuration: .default)
-        let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
-            // The download has finished.
-            if let e = error {
-                print("Error downloading cat picture: \(e)")
-            } else {
-                // No errors found.
-                // It would be weird if we didn't have a response, so check for that too.
-                if let res = response as? HTTPURLResponse {
-                    //print("Downloaded cat picture with response code \(res.statusCode)")
-                    if let imageData = data {
-                        // Finally convert that Data into an image and do what you wish with it.
-                        DispatchQueue.main.async {
-                            cell.itemImg.image = UIImage(data: imageData)
-                        }
-                        // Do something with your image.
-                    } else {
-                        print("Couldn't get image: Image is nil")
-                    }
+        if item.img == "N/A" || item.img.isEmptyOrWhitespace() {
+            cell.itemImg.image = UIImage(named: "brokenImage")
+        }
+        else{
+            var tmpImg = ""
+            if item.img.prefix(5) == "https" {
+                tmpImg = item.img
+            }
+            else {
+                tmpImg = "https" + item.img.dropFirst(4)
+            }
+            let imgUrl = URL(string: tmpImg)
+            let session = URLSession(configuration: .default)
+            let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
+                // The download has finished.
+                if let e = error {
+                    print("Error downloading cat picture: \(e)")
                 } else {
-                    print("Couldn't get response code for some reason")
+                    // No errors found.
+                    // It would be weird if we didn't have a response, so check for that too.
+                    if let res = response as? HTTPURLResponse {
+                        //print("Downloaded cat picture with response code \(res.statusCode)")
+                        if let imageData = data {
+                            // Finally convert that Data into an image and do what you wish with it.
+                            DispatchQueue.main.async {
+                                cell.itemImg.image = UIImage(data: imageData)
+                            }
+                            // Do something with your image.
+                        } else {
+                            print("Couldn't get image: Image is nil")
+                        }
+                    } else {
+                        print("Couldn't get response code for some reason")
+                    }
                 }
             }
+            downloadPicTask.resume()
         }
-        downloadPicTask.resume()
         cell.itemShipCost?.text = item.shipCost
         cell.itemZip?.text = item.zip
         cell.info = results[indexPath.row]
@@ -288,14 +302,5 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.editMsg.isHidden = true
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
