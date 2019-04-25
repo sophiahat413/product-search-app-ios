@@ -130,7 +130,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     guard let json = jsonObject as? [String: Any] else {
                         return
                     }
-                    print("print postal: ")
+                    print("user current location: ")
                     DispatchQueue.main.async{
                         self.userLocation = json["postal"] as! String
                         print(self.userLocation)
@@ -151,15 +151,16 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         getWishList();
     }
     func getWishList(){
-        print("wish list")
         wishList = []
         cnt = 0
         totalPrice = 0.0
         let regex = try! NSRegularExpression(pattern: ".*[A-Za-z].*")
+        //print("in wish list: ")
         for key in UserDefaults.standard.dictionaryRepresentation().keys{
             let range = NSRange(location: 0, length: key.count)
             if regex.firstMatch(in: key, options: [], range: range) == nil && key.count > 0 {
                 let dictionary = UserDefaults.standard.object(forKey: key) as? [String: Any]
+                //print(dictionary)
                 if(!(dictionary?.isEmpty)!){
                     cnt += 1
                     totalPrice += dictionary?["priceN"] as! Double
@@ -168,6 +169,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 }
             }
         }
+        //print(wishList)
         WishList.reloadData()
         if(cnt > 0){
             if(cnt > 1){
@@ -326,34 +328,39 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             cell.status.text = wishList[indexPath.row]["condition"] as? String
             cell.zipcode.text = wishList[indexPath.row]["zip"] as? String
             let imgF = wishList[indexPath.row]["image"] as? String
-            if imgF != nil {
-                let tmpImg = "https" + imgF!.dropFirst(4)
-                let imgUrl = URL(string: tmpImg)
-                let session = URLSession(configuration: .default)
-                let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
-                        // The download has finished.
-                    if let e = error {
-                            print("Error downloading cat picture: \(e)")
-                    } else {
-                            // No errors found.
-                            // It would be weird if we didn't have a response, so check for that too.
-                        if let res = response as? HTTPURLResponse {
-                                //print("Downloaded cat picture with response code \(res.statusCode)")
-                            if let imageData = data {
-                                    // Finally convert that Data into an image and do what you wish with it.
-                                DispatchQueue.main.async {
-                                    cell.img.image = UIImage(data: imageData)
-                                }
-                                    // Do something with your image.
-                            } else {
-                                print("Couldn't get image: Image is nil")
-                            }
+            if imgF == "N/A" || imgF!.isEmptyOrWhitespace() {
+                 cell.img.image = UIImage(named: "brokenImage")
+            }
+            else{
+                if imgF != nil {
+                    let tmpImg = "https" + imgF!.dropFirst(4)
+                    let imgUrl = URL(string: tmpImg)
+                    let session = URLSession(configuration: .default)
+                    let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
+                            // The download has finished.
+                        if let e = error {
+                                print("Error downloading cat picture: \(e)")
                         } else {
-                            print("Couldn't get response code for some reason")
+                                // No errors found.
+                                // It would be weird if we didn't have a response, so check for that too.
+                            if let res = response as? HTTPURLResponse {
+                                    //print("Downloaded cat picture with response code \(res.statusCode)")
+                                if let imageData = data {
+                                        // Finally convert that Data into an image and do what you wish with it.
+                                    DispatchQueue.main.async {
+                                        cell.img.image = UIImage(data: imageData)
+                                    }
+                                        // Do something with your image.
+                                } else {
+                                    print("Couldn't get image: Image is nil")
+                                }
+                            } else {
+                                print("Couldn't get response code for some reason")
+                            }
                         }
                     }
+                    downloadPicTask.resume()
                 }
-                downloadPicTask.resume()
             }
             return cell
         }

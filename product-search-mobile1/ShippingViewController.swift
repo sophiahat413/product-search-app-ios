@@ -8,6 +8,20 @@
 
 import UIKit
 import SwiftSpinner
+extension UILabel {
+    func calculateMaxLines(actualWidth: CGFloat?) -> Int {
+        var width = frame.size.width
+        if let actualWidth = actualWidth {
+            width = actualWidth
+        }
+        let maxSize = CGSize(width: width, height: CGFloat(Float.infinity))
+        let charSize = font.lineHeight
+        let text = (self.text ?? "") as NSString
+        let textSize = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        let linesRoundedUp = Int(ceil(textSize.height/charSize))
+        return linesRoundedUp
+    }
+}
 
 class ShippingTableCell: UITableViewCell{
    
@@ -68,9 +82,13 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
         SellerTable.delegate = self
         SellerTable.dataSource = self
         SellerTable.isScrollEnabled = false
+        SellerTable.estimatedRowHeight = 30
+        SellerTable.rowHeight = UITableView.automaticDimension
         sellerKeys = Array(seller.keys)
         shipKeys = Array(shipping.keys)
         shipKeys.insert("Shipping Cost", at: 0)
+        print("get shipcodt!!!!")
+        print(shipCost)
         returnKeys = Array(policy.keys)
         editMsg.isHidden = true
         editMsg.layer.zPosition = 1;
@@ -175,6 +193,30 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
         }
         return v
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        if(headers[indexPath.section] == "Return Policy"){
+            let key = returnKeys[indexPath.row]
+            if key == "Return Mode" {
+                let content = policy[key] as? String
+                if (content?.count)! <= 20{
+                    return 30
+                }
+                else if (content?.count)! <= 40 {
+                     return 45
+                }
+                else{
+                    return 60
+                }
+            }
+            else{
+                return 30
+            }
+        }
+        else{
+            return 30
+        }
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(headers[section] == "Seller"){
              return sellerKeys.count
@@ -193,7 +235,7 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
             if(key == "Store Name"){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell3", for: indexPath) as! ShippingTableCell
                  let json = seller[key] as? [String:Any]
-                cell.storeL.text = key
+                cell.storeL.text = "          " + key
                 let storeName = (json!["name"] as? String)!
                 let attributedString = NSMutableAttributedString(string: storeName)
                 attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: storeName.count))
@@ -240,6 +282,7 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell2", for: indexPath) as! ShippingTableCell
                 cell.sellerL.text = key
                 cell.sellerC.text = seller[key] as? String
+                cell.sellerC.numberOfLines = 0
                 return cell
             }
         }
@@ -252,6 +295,7 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
             }
             else{
                 cell.sellerC.text = shipping[key] as? String
+                cell.sellerC.numberOfLines = 0
             }
             return cell
         }
@@ -260,6 +304,7 @@ class ShippingViewController: UIViewController,  UITableViewDataSource, UITableV
             let cell = tableView.dequeueReusableCell(withIdentifier: "sellerCell2", for: indexPath) as! ShippingTableCell
             cell.sellerL.text = key
             cell.sellerC.text = policy[key] as? String
+            cell.sellerC.numberOfLines = 0
             return cell
         }
     }

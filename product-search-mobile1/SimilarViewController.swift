@@ -74,6 +74,7 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
         editMsg.layer.cornerRadius = 5.0
         editMsg.layer.masksToBounds = true
         sortingOrder.isUserInteractionEnabled = false
+        sortingOrder.alpha = 0.6
         //print("tab in similar: ")
         //print(info)
         if(UserDefaults.standard.object(forKey: id) == nil){
@@ -138,18 +139,23 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
             case 0:
                 sortFactor = "default"
                 sortingOrder.isUserInteractionEnabled = false
+                sortingOrder.alpha = 0.6
             case 1:
                 sortFactor = "title"
                 sortingOrder.isUserInteractionEnabled = true
+                sortingOrder.alpha = 1
             case 2:
                 sortFactor = "price"
                 sortingOrder.isUserInteractionEnabled = true
+                sortingOrder.alpha = 1
             case 3:
                 sortFactor = "days"
                 sortingOrder.isUserInteractionEnabled = true
+                sortingOrder.alpha = 1
             case 4:
                 sortFactor = "shipping"
                 sortingOrder.isUserInteractionEnabled = true
+                sortingOrder.alpha = 1
             default: break
         }
         changeOrder()
