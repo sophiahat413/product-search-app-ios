@@ -91,7 +91,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3s4-bR-AT1">
-                                                    <rect key="frame" x="268" y="71" width="81" height="18"/>
+                                                    <rect key="frame" x="262" y="71" width="110" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.43378941970000001" green="0.43378941970000001" blue="0.43378941970000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1530,6 +1530,6 @@
         <image name="wishListEmpty" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="4fo-Hy-LjP"/>
+        <segue reference="xYO-90-vXl"/>
     </inferredMetricsTieBreakers>
 </document>

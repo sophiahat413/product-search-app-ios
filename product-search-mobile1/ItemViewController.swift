@@ -51,6 +51,8 @@ class ItemViewCell: UITableViewCell{
     @IBAction func editList(_ sender: UIButton) {
         if(UserDefaults.standard.object(forKey: id) == nil){
             UserDefaults.standard.set(info, forKey: id)
+            //print("add item from items table")
+            //print(info)
             sender.setImage(UIImage(named:"wishListFilled"), for:.normal)
             msg = itemTitle.text! + " was added to the wishList"
         }
@@ -82,9 +84,11 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var currentPolicy:[String:Any] = [:]
     var currentItemInfo:[String:Any] = [:]
     var infoOldUrl = ""
+    var selectedId:String = ""
     var currentSimilar:[[String:Any]] = []
     var currentPictures:[[String:Any]] = []
     var currentInfo:[String:Any] = [:]
+    var selectedRow = IndexPath(row: 0, section: 0)
     
     
     override func viewDidLoad() {
@@ -167,8 +171,6 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath) as! ItemViewCell
-        //print("get into view!!")
-        //print(items)
         let item = items[indexPath.row]
         let id = results[indexPath.row]["id"] as! String
         cell.delegate = self
@@ -180,8 +182,6 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         else{
             cell.editWish.setImage(UIImage(named:"wishListFilled"), for:.normal)
-            //print("some new items are added")
-            //print(cell.itemTitle);
         }
         if item.img == "N/A" || item.img.isEmptyOrWhitespace() {
             cell.itemImg.image = UIImage(named: "brokenImage")
@@ -194,7 +194,8 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
             else {
                 tmpImg = "https" + item.img.dropFirst(4)
             }
-            let imgUrl = URL(string: tmpImg)
+            let newUrl = tmpImg.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+            let imgUrl = URL(string: newUrl!)
             let session = URLSession(configuration: .default)
             let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
                 // The download has finished.
@@ -224,16 +225,19 @@ class ItemViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.itemShipCost?.text = item.shipCost
         cell.itemZip?.text = item.zip
         cell.info = results[indexPath.row]
-        
-        //cell.info["image"] = cell.itemImg.image
         cell.id = id
+        if cell.id == selectedId {
+            cell.backgroundColor = UIColor(red:0.82, green:0.80, blue:0.80, alpha:1.0)
+        }
+        else {
+            cell.backgroundColor = UIColor.white
+        }
         //cell.itemStatus?.text = item.wish
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print("select one item!!")
-        //print(items[indexPath.row])
         currentId = items[indexPath.row].id
+        selectedId = currentId
         currentShip = items[indexPath.row].shipInfo
         currentTitle = items[indexPath.row].title
         currentPrice = items[indexPath.row].price

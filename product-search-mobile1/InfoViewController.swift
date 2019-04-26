@@ -112,9 +112,16 @@ class InfoViewController: UIViewController, UIScrollViewDelegate,  UITableViewDa
         else{
             pageControl.numberOfPages = imgs.count
             for i in 0..<imgs.count {
-                //let tmpImg = "https" + pic.dropFirst(4)
-                //print(tmpImg)
-                let imgUrl = URL(string: imgs[i])
+                let oriUrl = imgs[i]
+                var newUrl1 = ""
+                if oriUrl.prefix(5) == "https" {
+                    newUrl1 = oriUrl
+                }
+                else{
+                    newUrl1 = "https" + oriUrl.dropFirst(4)
+                }
+                let newUrl = newUrl1.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+                let imgUrl = URL(string: newUrl!)
                 let session = URLSession(configuration: .default)
                 let downloadPicTask = session.dataTask(with: imgUrl!) { (data, response, error) in
                     // The download has finished.

@@ -19,9 +19,17 @@ extension String {
         return (self.trimmingCharacters(in: NSCharacterSet.whitespaces) == "")
     }
 }
+extension UserDefaults {
+    class func clean() {
+        let aValidIdentifier = Bundle.main.bundleIdentifier
+        self.standard.removePersistentDomain(forName: aValidIdentifier!)
+        self.standard.synchronize()
+    }
+}
 class ViewTableCell: UITableViewCell{
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var price: UILabel!
+    
     @IBOutlet weak var ship: UILabel!
     @IBOutlet weak var zipcode: UILabel!
     @IBOutlet weak var status: UILabel!
@@ -75,6 +83,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         super.viewDidLoad()
         navigationItem.title = "Product Search"
         navigationController?.navigationItem.title = "Product Search"
+        //UserDefaults.clean()
         let thePicker = UIPickerView()
         thePicker.backgroundColor = UIColor.white
         category.inputView = thePicker
@@ -155,13 +164,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         cnt = 0
         totalPrice = 0.0
         let regex = try! NSRegularExpression(pattern: ".*[A-Za-z].*")
-        //print("in wish list: ")
         for key in UserDefaults.standard.dictionaryRepresentation().keys{
             let range = NSRange(location: 0, length: key.count)
+            
             if regex.firstMatch(in: key, options: [], range: range) == nil && key.count > 0 {
                 let dictionary = UserDefaults.standard.object(forKey: key) as? [String: Any]
-                //print(dictionary)
-                if(!(dictionary?.isEmpty)!){
+                if(!(dictionary?.isEmpty)! && dictionary!.keys.count != 0){
                     cnt += 1
                     totalPrice += dictionary?["priceN"] as! Double
                     totalPrice = (totalPrice * 1000).rounded() / 1000
@@ -169,7 +177,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 }
             }
         }
-        //print(wishList)
         WishList.reloadData()
         if(cnt > 0){
             if(cnt > 1){
@@ -248,6 +255,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @objc func searchRecords(_ textField: UITextField){
         self.zipcodes.removeAll()
+        self.autoComplete.reloadData()
         autoComplete.isHidden = false
         var resZips:[String] = Array()
         if zipcode.text?.count != 0 {
@@ -367,10 +375,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == autoComplete){
-            print("select one item!!")
-            print("enter table view get zoipcodes")
-            print(zipcodes)
-            print(zipcodes[indexPath.row])
             zipcode.text = zipcodes[indexPath.row]
             tableView.isHidden = true
         }
@@ -379,14 +383,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             currentTitle = (wishList[indexPath.row]["title"] as? String)!
             currentPrice = (wishList[indexPath.row]["price"] as? String)!
             currentShipCost = (wishList[indexPath.row]["shipping"] as? String)!
-            //performSegue(withIdentifier: "getDetails", sender: nil)
+            currentItemInfo = wishList[indexPath.row]
+            //print("currentItem Info in wish list")
+            //print(currentItemInfo)
             infoOldUrl = "https://product-search-backend.appspot.com/getSingle?itemId=" + currentId
             getInfo(id: currentId, userCompletionHandler: { user, error in
                 if let user = user{
                     self.currentSpecifics
                         = user["specifics"] as! [String : Any]
                     self.currentImg = user["image"] as! [String]
-                    self.currentItemInfo = user
                     self.currentItemLink = user["link"] as! String
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "getDetailFromMain", sender: nil)
@@ -441,6 +446,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             vc.name = currentTitle
             vc.price = currentPrice
             vc.storeUrl = currentItemLink
+            vc.itemInfo = currentItemInfo
+            print("send iten info from widhlisr:")
+            print(currentItemInfo)
         }
     }
     func getInfo(id: String, userCompletionHandler: @escaping([String:Any]?, Error?) -> Void){
@@ -485,6 +493,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         else{
             zipcode.isHidden = true
             zipcode.text = ""
+            autoComplete.isHidden = true
             clearTop.constant = -10
             searchTop.constant = -10
         }
@@ -572,7 +581,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
         invalid = false
         requestURL = "https://product-search-advance.appspot.com/listGet?keyword=";
-        //equestURL = "http://localhost:8080/listGet?keyword=";
         key = keyword.text!
         key = key.encodeURIComponent()!
         requestURL += key
@@ -677,6 +685,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         zipcode.isHidden = true
         clearTop.constant = -10
         searchTop.constant = -10
+        New = false
+        Used = false
+        Unspecified = false
+        Pickup = false
+        FreeShip = false
     }
     
     @objc func hideKeywordError() {

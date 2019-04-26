@@ -46,7 +46,9 @@ class PhotosViewController: UIViewController {
         }
         else{
             for i in 0..<info.count {
-                let imgUrl = URL(string: info[i]["link"] as! String)
+                let oldUrl = info[i]["link"] as! String
+                let newUrl = oldUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+                let imgUrl =  URL(string: newUrl!)
                 let session = URLSession(configuration: .default)
                 let downloadPicTask = session.dataTask(with: imgUrl!){
                     (data, response, error) in

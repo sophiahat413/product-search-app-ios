@@ -227,7 +227,16 @@ class SimilarViewController: UIViewController,UICollectionViewDataSource, UIColl
             cell.itemImg.image = UIImage(named: "brokenImage")
         }
         else{
-            let imgUrl = URL(string: items[indexPath.row].img )
+            let oriUrl = items[indexPath.row].img
+            var newUrl1 = ""
+            if oriUrl.prefix(5) == "https" {
+                newUrl1 = oriUrl
+            }
+            else {
+                newUrl1 = "https" + oriUrl.dropFirst(4)
+            }
+            let newUrl = newUrl1.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+            let imgUrl = URL(string: newUrl!)
             let session = URLSession(configuration: .default)
             let downloadPicTask = session.dataTask(with: imgUrl!) {
                 (data, response, error) in
